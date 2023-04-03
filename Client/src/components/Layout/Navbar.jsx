@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from "react-router-dom";
 import logo from '../../assets/logos/logo.png';
 import { FaSearch } from 'react-icons/fa';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
@@ -9,7 +9,7 @@ const Navbar = () => {
       
           {/* Logo */}
           <div className="logo">
-              <img src={logo} className=' h-7 w-full lg:h-14     ' alt="" />
+             <Link to="home"> <img src={logo} className=' h-7 w-full lg:h-14' alt="" /></Link>
           </div>
           
           {/* Middle */}
@@ -22,13 +22,13 @@ const Navbar = () => {
 
           {/* Right */}
           <div className='flex items-center text-white gap-3'>
-              <a href="#" className='underline'>Home</a>
-              <a href="#">Category</a>
-              <a href="#" className='font-semibold'>Register</a>
-              <a href="#" className='font-semibold'>Login</a>
-              <div className="cart relative">
-                  <a href="#"><AiOutlineShoppingCart className='w-10 h-10 text-lg relative' /></a>
-                  <a href="#" className='absolute bg-[#ff1e12] rounded-full top-0 right-0 text-[15px] font-bold px-[3px] '>10</a>
+              <Link to="home" className='underline'>Home</Link>
+              <Link to="category">Category</Link>
+              <Link to="register" className='font-semibold'>Register</Link>
+              <Link to="login" className='font-semibold'>Login</Link>
+              <div className="cart relative ">
+                  <Link to="carts" className='cursor-pointer'><AiOutlineShoppingCart className='w-10  h-10 text-lg relative' /></Link>
+                  <a href="#" className='absolute  bg-[#ff1e12] rounded-full top-0 right-0 text-[15px] font-bold px-[3px] '>10</a>
               </div>
           </div>
 
