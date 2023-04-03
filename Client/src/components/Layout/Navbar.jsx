@@ -23,7 +23,14 @@ const Navbar = () => {
           {/* Right */}
           <div className='flex items-center text-white gap-3'>
               <Link to="home" className='underline'>Home</Link>
-              <Link to="category">Category</Link>
+              {/* <Link to="category">Category</Link> */}
+              <select name="navSelectCategory" className='bg-transparent' placeholder='Category' id="">
+                     <option selected disabled className='text-black'>Category</option>
+                      <option value="Electronics" className='text-black'>Electronics</option>
+                      <option value="Electronics" className='text-black'>Sneakers</option>
+                      <option value="Electronics" className='text-black'>Mens</option>
+                      <option value="Electronics" className='text-black'>Womens</option>
+                </select>
               <Link to="register" className='font-semibold'>Register</Link>
               <Link to="login" className='font-semibold'>Login</Link>
               <div className="cart relative ">
