@@ -1,4 +1,4 @@
-const { hashPassword } = require('../logic/authLogic');
+const { hashPassword, comparePassword } = require('../helpers/authLogic');
 const User = require('../models/userModel');
 
 const registerController = async (req, res) => {
@@ -20,7 +20,8 @@ const registerController = async (req, res) => {
     }
 
     // DO user Exists
-    const userExist = await User.find({ email , phone });
+    const userExist = await User.find({ email, phone });
+    
     if (userExist) {
         res.json({ message: "User Already Signed Up with this email or phone,Please login" });
     }
@@ -37,4 +38,46 @@ const registerController = async (req, res) => {
 
 }
 
-module.exports = registerController;
+
+// Login COntroller
+const loginController = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        if (!email || !password) {
+            res.json({ message: "Enter a valid email or password" });
+
+        }
+        else {
+            const user = await User.findOne({ email });
+            if (!user) {
+                res.json({
+                    success: false,
+                    message:"User Not Found"
+                })
+            }
+            else {
+                const matchPassword = await comparePassword(password, user.password);
+                if (!matchPassword) {
+                    res.json({
+                        success: false,
+                        message:"Incorrect Password!"
+                    })
+                }
+                else {
+                    res.json({
+                        success:true,
+                        message: "User Logged in Successfully"
+                    });
+                }
+            }
+        }
+    } catch (error) {
+        res.json({ message: "Problem Executing Login Function! Try Again" });
+    }
+}
+module.exports = {
+    registerController, 
+    loginController,
+    // anotherMethod
+};
+
