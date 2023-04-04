@@ -1,4 +1,5 @@
 const { hashPassword, comparePassword } = require('../helpers/authLogic');
+const JWT = require('jsonwebtoken');
 const User = require('../models/userModel');
 
 const registerController = async (req, res) => {
@@ -64,9 +65,17 @@ const loginController = async (req, res) => {
                     })
                 }
                 else {
+                    const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '3d' });
                     res.json({
                         success:true,
-                        message: "User Logged in Successfully"
+                        message: "User Logged in Successfully",
+                        user: {
+                            name: user.name,
+                            email: user.email,
+                            address:user.address
+                        },
+
+                        token
                     });
                 }
             }
