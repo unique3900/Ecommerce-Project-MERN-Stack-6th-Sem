@@ -1,0 +1,4 @@
+in model make user schema and export model
+in helpers write logic like read add to db,add encrypted pwd to db...
+in routes make route of api endpoint using controller
+controller takes req and sends response
