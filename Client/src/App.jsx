@@ -4,6 +4,7 @@ import Navbar from './components/Layout/Navbar'
 import './App.css'
 import Footer from './components/Layout/Footer'
 import Hero from './components/Layout/Hero'
+import PagenotFound from './components/SubComponents/PagenotFound'
 const App = () => {
   return (
     <div>
@@ -15,7 +16,8 @@ const App = () => {
         <Route path="category" element={ <h1>Categories</h1> } />
       </Routes>
 
-      <Hero/>
+      {/* <Hero/> */}
+      <PagenotFound/>
       {/* <Footer/> */}
     </div>
   )

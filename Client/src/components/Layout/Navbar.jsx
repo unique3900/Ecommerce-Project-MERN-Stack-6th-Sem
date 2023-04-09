@@ -26,7 +26,7 @@ const Navbar = () => {
               {/* <Link to="category">Category</Link> */}
 
               <select name="navSelectCategory" className='bg-transparent' placeholder='Category' id="">
-                    <option selected disabled className='text-black'>Category</option>
+                    <option  disabled className='text-black'>Category</option>
                       <option value="Electronics" className='text-black'>Electronics</option>
                       <option value="Electronics" className='text-black'>Sneakers</option>
                       <option value="Electronics" className='text-black'>Mens</option>
