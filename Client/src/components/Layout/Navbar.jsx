@@ -5,7 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 const Navbar = () => {
   return (
-    <div className='flex lg:justify-between sm:justify-evenly gap-8 bg-[#2874f0] px-4 py-2 items-center flex-1'>
+    <div className='flex z-1 lg:justify-between sm:justify-evenly gap-8 bg-[#2874f0] px-4 py-2 items-center flex-1'>
       
           {/* Logo */}
           <div className="logo">
