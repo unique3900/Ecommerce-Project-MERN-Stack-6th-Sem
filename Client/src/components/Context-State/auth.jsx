@@ -7,7 +7,8 @@ const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState({
         user: null,
         token: "",
-      });
+    });
+    
     useEffect(() => {
         const LocalData = localStorage.getItem("auth");
         if (LocalData) {

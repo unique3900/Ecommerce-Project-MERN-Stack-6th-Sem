@@ -5,10 +5,14 @@ import { FaSearch } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useAuth } from '../Context-State/auth';
+import { toast } from 'react-toastify';
 const Navbar = () => {
 
   const navigate = useNavigate();
   const [auth, setAuth] = useAuth();
+
+  const LogCheck = localStorage.getItem("auth");
+    const parsedLogCheck = JSON.parse(LogCheck);
   const handleLogout = (e) => {
     e.preventDefault();
     console.log("Logout")
@@ -18,6 +22,7 @@ const Navbar = () => {
       token: ""
     });
     localStorage.removeItem("auth");
+    toast.success("User Logged Out")
     navigate('/login');
   }
   return (
@@ -50,17 +55,17 @@ const Navbar = () => {
                   </select>
                   
         {
-          !auth ? <>
+          !auth||!parsedLogCheck ? <>
                         <Link to="register" className='font-semibold'>Register</Link>
-              <Link to="login" className='font-semibold'>Login</Link>
+                        <Link to="login" className='font-semibold'>Login</Link>
           
-          </> :<>
+          </> :parsedLogCheck?<>
           <div className="group flex relative">
           <FiLogOut className='w-10 h-8 font-bold cursor-pointer' onClick={(e)=>handleLogout(e)}/>
            <span className="group-hover:opacity-100 transition-opacity bg-gray-800 px-1 text-sm text-gray-100 rounded-md absolute left-1/2 
             -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto" >Logout</span>
           </div>
-          </>
+          </>:""
         }
 
               <div className="cart relative ">
