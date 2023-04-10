@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "concurrently": "^8.0.1"
+  },
+  "scripts": {
+    "server": "nodemon index.js",
+    "client":"npm run dev --prefix ./Client",
+    "start": "concurrently \"npm run server\" \"npm run client\""
+  }
+}

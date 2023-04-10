@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose'); 
 const dotenv = require('dotenv').config();
 const app = express();
+const cors = require('cors');
 
 const authRoutes=require('./routes/authRoutes');
 
@@ -13,6 +14,7 @@ mongoose.connect('mongodb://localhost:27017/ecommerce');
 // Middlewares
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cors());
 
 
 // ROUTES

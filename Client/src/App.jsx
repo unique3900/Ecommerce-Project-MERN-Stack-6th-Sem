@@ -20,7 +20,7 @@ const App = () => {
         <Route path="category" element={ <h1>Categories</h1> } />
       </Routes>
 
-      {/* <Hero/> */}
+      <Hero/>
       {/* <PagenotFound/> */}
       {/* <Footer/> */}
     </div>
