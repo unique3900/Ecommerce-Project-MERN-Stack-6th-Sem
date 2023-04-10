@@ -5,12 +5,14 @@ import './App.css'
 import Footer from './components/Layout/Footer'
 import Hero from './components/Layout/Hero'
 import PagenotFound from './components/SubComponents/PagenotFound'
-import Login from './components/Auth/Login'
-import Register from './components/Auth/Register'
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import { ToastContainer} from 'react-toastify';
 const App = () => {
   return (
     <div>
       <Navbar />
+
       <Routes>
         <Route path="/" element={<h1>Home</h1>} />
         <Route path="home" element={<h1>Home</h1>} />

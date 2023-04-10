@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import PhoneInput from 'react-phone-number-input';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -12,13 +15,32 @@ const Register = () => {
 
     const [error, setError] = useState(false);
     const [passMatch, setpassMatch] = useState(true);
+
+    const navigate = useNavigate();
     
-    const handleSubmit = () => {
+    const handleSubmit =async () => {
         if (!name || !email || !password || !confirmPassword || !address || !phone || !gender) {
             setError(true);
         }
         else if (confirmPassword !== password) {
             setpassMatch(false);
+        }
+        else {
+            try {
+                const fetchResponse = await axios.post('http://localhost:8080/api/v1/auth/register', { name, email, password, address, phone, gender });
+                if (fetchResponse.data.success) {
+                    toast.success(fetchResponse.data.message);
+                    navigate('/login');
+                }
+                else {
+                    toast.error(fetchResponse.data.message);
+                 
+                }
+                
+            } catch (error) {
+                console.log(error)
+            }
+           
         }
 
         console.log(name,email,password,confirmPassword,phone,gender);
@@ -26,7 +48,7 @@ const Register = () => {
  
     return (
         <div className='flex overflow-y-auto justify-center items-center h-screen bg-slate-200'>
-            <div className="mt-14  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
+            <div className="mt-14 w-[600px]  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
                 <div>
                     <h1 className='text-center  font-semibold text-3xl'>Register</h1>
                 </div>
@@ -111,7 +133,7 @@ const Register = () => {
                 </div>
                 <button className='mt-1 bg-blue-500 p-2 w-full text-white' onClick={handleSubmit}>Register</button>
             </div>
-
+           
         </div>
     )
 }

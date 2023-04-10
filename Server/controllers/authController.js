@@ -3,7 +3,7 @@ const JWT = require('jsonwebtoken');
 const User = require('../models/userModel');
 
 const registerController = async (req, res) => {
-    const { name, email, address, password, phone } = req.body;
+    const { name, email, address, password, phone,gender } = req.body;
     if (!name) {
         res.json({success:false, message: "Name is Required" });
     }
@@ -19,6 +19,9 @@ const registerController = async (req, res) => {
     if (!phone) {
         res.json({success:false, message: "Phone is Required" });
     }
+    if (!gender) {
+        res.json({success:false, message: "Gender is Required" });
+    }
 
     // DO user Exists
 
@@ -30,7 +33,7 @@ const registerController = async (req, res) => {
         }
         else {
             const hashedPassword = await hashPassword(password);
-            const user = await new User({ name, email, password: hashedPassword, address, phone }).save();
+            const user = await new User({ name, email, password: hashedPassword, address, phone,gender }).save();
             if (user) {
                 console.log(user);
                 res.json({ success:true,message: "User Registration Successful" });
@@ -38,7 +41,7 @@ const registerController = async (req, res) => {
             
         }
     } catch (error) {
-        res.json({ success:false,message: "Error Processing Request,User With this email or phone already exists" });
+        res.json({ success:false,message: "Error Processing Request,User With this email or phone already exists"+error });
     }
    
     

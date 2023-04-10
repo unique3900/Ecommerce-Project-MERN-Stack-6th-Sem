@@ -14,7 +14,7 @@ const Login = () => {
 }
   return (
 <div className='flex justify-center items-center h-screen bg-slate-200'>
-            <div className="mt-14  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
+            <div className="mt-14 w-[600px]  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
                 <div>
                     <h1 className='text-center  font-semibold text-3xl'>Login</h1>
                 </div>
