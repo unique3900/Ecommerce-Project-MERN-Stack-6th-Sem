@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
+import { AuthProvider } from './components/Context-State/auth';
 
 
 
@@ -13,9 +14,11 @@ const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 
 root.render(
-  <BrowserRouter>
-    <App />
-   <ToastContainer/>
-  </BrowserRouter>,
+  <AuthProvider>
+          <BrowserRouter>
+            <App />
+          <ToastContainer/>
+            </BrowserRouter>
+    </AuthProvider>
 
 )

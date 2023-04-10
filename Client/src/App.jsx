@@ -8,6 +8,7 @@ import PagenotFound from './components/SubComponents/PagenotFound'
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import { ToastContainer} from 'react-toastify';
+import Home from './components/Home'
 const App = () => {
   return (
     <div>
@@ -15,7 +16,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<h1>Home</h1>} />
-        <Route path="home" element={<h1>Home</h1>} />
+        <Route path="home" element={<Home/>} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={ <Register/> } />
         <Route path="products" element={ <h1>Products</h1> } />

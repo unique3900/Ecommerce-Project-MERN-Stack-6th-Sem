@@ -1,12 +1,18 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAuth } from '../Context-State/auth';
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
 
+
+    const [auth, setAuth] = useAuth();
+
+    const navigate = useNavigate();
     const handleSubmit = async() => {
         if ( !email || !password ) {
             setError(true);
@@ -15,8 +21,15 @@ const Login = () => {
             try {
                 const fetchResponse = await axios.post('http://localhost:8080/api/v1/auth/login', {  email, password});
                 if (fetchResponse.data.success) {
+                   
                     toast.success(fetchResponse.data.message);
-                    
+                    setAuth({
+                        ...auth,
+                        user: fetchResponse.data.user,
+                        token: fetchResponse.data.token
+                    });
+                    localStorage.setItem("auth", JSON.stringify(auth) );
+                    navigate('/home');
                 }
                 else {
                     toast.error(fetchResponse.data.message);
