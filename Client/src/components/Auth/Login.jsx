@@ -1,46 +1,21 @@
 import React, { useState } from 'react'
-import { AiOutlineLogin } from 'react-icons/ai';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
 
-
-    const navigate = useNavigate();
-    const handleSubmit = async() => {
+    const handleSubmit = () => {
         if ( !email || !password ) {
             setError(true);
-            toast.error('Enter Details Correctly');
-        }
-        else {
-            try {
-                const fetch = await axios.post(`http://localhost:8080/api/v1/auth/login`,{email,password});
-                if (fetch.data.success == true) {
-                    toast.success(fetch.data.message);
-                    console.log(fetch.data.token);
-                    navigate('/home');
-                }
-                else {
-                    toast.error(fetch.data.message);
-                    
-                }
-            } catch (error) {
-                toast.error("Something Went Wrong");
-            }
-           
-            console.log(email,password);
         }
 
 
 }
   return (
-<div className='flex  justify-center items-center h-screen bg-slate-200'>
-            <div className="mt-14 w-[500px] lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
-              <div className='flex flex-col gap-3 place-items-center'>
-                  <AiOutlineLogin className='h-16 w-10'/>
+<div className='flex justify-center items-center h-screen bg-slate-200'>
+            <div className="mt-14  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
+                <div>
                     <h1 className='text-center  font-semibold text-3xl'>Login</h1>
                 </div>
                 <div className="form grid grid-flow-row  gap-2  mt-5">
