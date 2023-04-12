@@ -18,7 +18,7 @@ const Home = () => {
       <div>
           <Hero/>
           {
-              <h1>{JSON.stringify(auth,null,4) }</h1>
+              // <h1>{JSON.stringify(auth,null,4) }</h1>
       }
     </div>
   )

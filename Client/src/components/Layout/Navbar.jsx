@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import logo from '../../assets/logos/logo.png';
 import { FaSearch } from 'react-icons/fa';
@@ -10,9 +10,12 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const [auth, setAuth] = useAuth();
-
+  const [username, setUsername] = useState();
   const LogCheck = localStorage.getItem("auth");
-    const parsedLogCheck = JSON.parse(LogCheck);
+  const parsedLogCheck = JSON.parse(LogCheck);
+  if (parsedLogCheck) {
+    // setUsername(parsedLogCheck.user.name.split(" ")[0]) ;
+  }
   const handleLogout = (e) => {
     e.preventDefault();
     console.log("Logout")
@@ -26,11 +29,11 @@ const Navbar = () => {
     navigate('/login');
   }
   return (
-    <div className='flex z-1 lg:justify-between sm:justify-evenly gap-8 bg-[#2874f0] px-4 py-2 items-center flex-1'>
+    <div className='flex z-1 lg:justify-between sm:justify-evenly w-full gap-8 bg-[#2874f0] px-4 py-2 items-center flex-1'>
       
           {/* Logo */}
           <div className="logo">
-             <Link to="home"> <img src={logo} className=' h-7 w-full lg:h-14' alt="" /></Link>
+             <Link to="home"> <img src={logo} className='hidden md:flex lg:flex h-7 w-full lg:h-14' alt="" /></Link>
           </div>
           
           {/* Middle */}
@@ -59,7 +62,8 @@ const Navbar = () => {
                         <Link to="register" className='font-semibold'>Register</Link>
                         <Link to="login" className='font-semibold'>Login</Link>
           
-          </> :parsedLogCheck?<>
+          </> : parsedLogCheck ? <>
+              <Link to='userinfo' className='font-bold capitalize '>Hi,{ parsedLogCheck.user.name.split(" ")[0]}</Link>
           <div className="group flex relative">
           <FiLogOut className='w-10 h-8 font-bold cursor-pointer' onClick={(e)=>handleLogout(e)}/>
            <span className="group-hover:opacity-100 transition-opacity bg-gray-800 px-1 text-sm text-gray-100 rounded-md absolute left-1/2 
