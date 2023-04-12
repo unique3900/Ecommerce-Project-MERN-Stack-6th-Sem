@@ -21,7 +21,9 @@ const Register = () => {
     const handleSubmit =async () => {
         if (!name || !email || !password || !confirmPassword || !address || !phone || !gender) {
             setError(true);
+            console.log(name, email, gender);
         }
+    
         else if (confirmPassword !== password) {
             setpassMatch(false);
         }
@@ -108,15 +110,15 @@ const Register = () => {
                         <div className="flex gap-4 justify-around">
                             <div className="flex">
                                     <label htmlFor="male">Male:</label>
-                                    <input type="radio" onChange={(e)=>setGender(e.target.value)} name="gender" id="" />
+                                    <input type="radio" onChange={(e)=>setGender(e.target.value)} value={'male'} name="gender" id="" />
                             </div>
                             <div className="flex">
                                     <label htmlFor="female">Female:</label>
-                                    <input type="radio" onChange={(e)=>setGender(e.target.value)} name="gender" id="" />
+                                    <input type="radio" onChange={(e)=>setGender(e.target.value)} value={'female'} name="gender" id="" />
                             </div>
                             <div className="flex">
                                     <label htmlFor="Others">Others:</label>
-                                    <input type="radio" onChange={(e)=>setGender(e.target.value)} name="gender" id="" />
+                                    <input type="radio" onChange={(e)=>setGender(e.target.value)} value={'others'} name="gender" id="" />
                             </div>
                             {
                             error&&!gender?<span className='bg-red-200 text-gray-500'>Gender is Required</span>:""
