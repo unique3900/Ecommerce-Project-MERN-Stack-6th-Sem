@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    secretKey: {
+        type: Number,
+        required: true,
+    },
 
     gender: {
         type: JSON,

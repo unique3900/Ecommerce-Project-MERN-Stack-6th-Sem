@@ -1,12 +1,13 @@
+import axios from 'axios';
 import React, { useState } from 'react'
+import { useNavigate ,Link} from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../Context-State/auth';
-import { useNavigate,Link } from 'react-router-dom';
-
 const ForgotPassword = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [key, setKey] = useState("");
+    const [otp, setOtp] = useState("");
     const [error, setError] = useState(false);
 
 
@@ -19,7 +20,7 @@ const ForgotPassword = () => {
         }
         else {
             try {
-                const fetchResponse = await axios.post('http://localhost:8080/api/v1/auth/login', {  email, password});
+                const fetchResponse = await axios.post('http://localhost:8080/api/v1/auth/forgot-password', {  email, password,otp});
                 if (fetchResponse.data.success) {
                    
                     toast.success(fetchResponse.data.message);
@@ -28,8 +29,7 @@ const ForgotPassword = () => {
                         user: fetchResponse.data.user,
                         token: fetchResponse.data.token
                     });
-                    localStorage.setItem("auth", JSON.stringify(fetchResponse.data) );
-                    navigate('/home');
+                    navigate('/login');
                 }
                 else {
                     toast.error(fetchResponse.data.message);
@@ -63,9 +63,9 @@ const ForgotPassword = () => {
                   
                   <div className="inputBox flex flex-col gap-1">
                         <label htmlFor="email">Secret Key</label>
-                        <input type="text" name='key' value={key} onChange={(e) => setKey(e.target.value)} className='outline-black border-b-2 px-2 rounded-md shadow-smpx-2' placeholder='Enter secret Key'/>
+                        <input type="text" name='otp' value={otp} onChange={(e) => setOtp(e.target.value)} className='outline-black border-b-2 px-2 rounded-md shadow-smpx-2' placeholder='Enter secret Key'/>
                         {
-                            error&&!key?<span className='bg-red-200 text-gray-500'>Key is Required</span>:""
+                            error&&!otp?<span className='bg-red-200 text-gray-500'>Key is Required</span>:""
                         }
                     </div>
 

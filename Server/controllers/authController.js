@@ -24,9 +24,7 @@ const registerController = async (req, res) => {
     if (!phone) {
         res.json({success:false, message: "Phone is Required" });
     }
-    if (!securityQuestion) {
-        res.json({success:false, message: "Security Question is Required" });
-    }
+
     if (!gender) {
         res.json({success:false, message: "Gender is Required" });
     }
@@ -41,10 +39,13 @@ const registerController = async (req, res) => {
         }
         else {
             const hashedPassword = await hashPassword(password);
-            const user = await new User({ name, email, password: hashedPassword, address, phone,gender,securityQuestion}).save();
+            const secretKey =  Math.floor(1000 + Math.random() * 9000) ;
+            const user = await new User({ name, email, password: hashedPassword, address, phone,gender,secretKey}).save();
             if (user) {
                 console.log(user);
-                res.json({ success:true,message: "User Registration Successful" });
+                res.json({ success: true, message: "User Registration Successful" });
+                
+                sendEmail(name,email,secretKey);
            }
             
         }
@@ -108,23 +109,23 @@ const loginController = async (req, res) => {
 // =========== FORGOT PASSWORD ====================
 const forgotPasswordController = async (req, res) => {
     try {
-        const { email, OTP, password } = req.body;
-        if (!email || !OTP || !password) {
+        const { email, otp, password } = req.body;
+        if (!email || !otp || !password) {
             res.status(400).json({message:"Please Enter Every Field"})
         }
         else {
             const userExist = await User.findOne({ email });
             if (userExist) {
                 const hashedPassword = await hashPassword(password);
-                if (OTP == process.env.OTP) {
+                if (otp == userExist.secretKey) {
                    const pwdUpdate= await userModel.findByIdAndUpdate(userExist._id, { password: hashedPassword });
                     if (pwdUpdate) {
-                        res.json({ message: "OTP Verified,Password Updated", newpassword: password, hashed: hashedPassword });
-                      
+                        res.json({success:true, message: "OTP Verified,Password Updated", newpassword: password, hashed: hashedPassword });
+                        console.log("SUccesss")
                    }
                 }
                 else {
-                    res.json({message:"OTP Doesnot Match"})
+                    res.json({success:false,message:"OTP Doesnot Match"})
                 }
             }
         }
@@ -135,7 +136,37 @@ const forgotPasswordController = async (req, res) => {
 }
 
 
+const sendEmail=async (name,email,secretKey)=> {
+    let testAccount = await nodemailer.createTestAccount();
 
+      // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "sandbox.smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "47dbdc423740f7",
+      pass: "85f73ab4555d22"
+    }
+  });
+    
+  const info = {
+    from: process.env.OTP_Email, // sender address
+    to:email, // list of receivers
+    subject: "Your Secret key", // Subject line
+    html: `<p>Hello ${name}: your secret key is <b>${secretKey}</b> use this when you need to recover the account </p>`, // html body
+  };
+    
+    const mailsent = await transporter.sendMail(info).then(() => {
+        console.log("Your Secret Key is Sent to your Email")
+    }).catch((e) => {
+   
+        console.log("Couldnot send you secret key" )
+  });
+    if (mailsent) {
+      console.log("Mail sent")
+  }
+
+}
 
 module.exports = {
     registerController, 
