@@ -12,6 +12,7 @@ import Home from './components/Home'
 import Dashboard from './user/Dashboard'
 import PrivateRoute from './routes/PrivateRoute'
 import UserInfo from './user/UserInfo'
+import ForgotPassword from './components/Auth/ForgotPassword'
 const App = () => {
   return (
     <div>
@@ -25,7 +26,8 @@ const App = () => {
           <Route path='dashboard' element={<Dashboard />} />
           <Route path='userinfo' element={<UserInfo/>} />
         </Route>
-        <Route path="register" element={ <Register/> } />
+        <Route path="register" element={<Register />} />
+        <Route path="forgot-password" element={ <ForgotPassword/>} />
         <Route path="products" element={ <h1>Products</h1> } />
         <Route path="category" element={ <h1>Categories</h1> } />
       </Routes>

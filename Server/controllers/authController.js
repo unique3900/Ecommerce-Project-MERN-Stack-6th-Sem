@@ -3,6 +3,9 @@ const JWT = require('jsonwebtoken');
 const User = require('../models/userModel');
 const userModel = require('../models/userModel');
 const dotenv = require('dotenv').config();
+const nodemailer = require("nodemailer");
+const userOTPVerificationModel = require('../models/OtpModel');
+
 
 const registerController = async (req, res) => {
     const { name, email, address, password, phone,gender,securityQuestion } = req.body;
@@ -105,18 +108,19 @@ const loginController = async (req, res) => {
 // =========== FORGOT PASSWORD ====================
 const forgotPasswordController = async (req, res) => {
     try {
-        const { email, OTP, newPassword } = req.body;
-        if (!email || !OTP || !newPassword) {
+        const { email, OTP, password } = req.body;
+        if (!email || !OTP || !password) {
             res.status(400).json({message:"Please Enter Every Field"})
         }
         else {
             const userExist = await User.findOne({ email });
             if (userExist) {
-                const hashedPassword = await hashPassword(newPassword);
+                const hashedPassword = await hashPassword(password);
                 if (OTP == process.env.OTP) {
-                   const pwdUpdate= await userModel.findByIdAndUpdate(userExist._id, { password: hashPassword });
+                   const pwdUpdate= await userModel.findByIdAndUpdate(userExist._id, { password: hashedPassword });
                     if (pwdUpdate) {
-                        res.json({ message: "OTP Verified,Password Updated",newpassword:newPassword,hashed:hashedPassword })
+                        res.json({ message: "OTP Verified,Password Updated", newpassword: password, hashed: hashedPassword });
+                      
                    }
                 }
                 else {
@@ -129,6 +133,10 @@ const forgotPasswordController = async (req, res) => {
         console.log(error)
     }
 }
+
+
+
+
 module.exports = {
     registerController, 
     loginController,
