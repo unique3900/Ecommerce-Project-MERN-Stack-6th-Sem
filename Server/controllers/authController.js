@@ -1,9 +1,11 @@
 const { hashPassword, comparePassword } = require('../helpers/authLogic');
 const JWT = require('jsonwebtoken');
 const User = require('../models/userModel');
+const userModel = require('../models/userModel');
+const dotenv = require('dotenv').config();
 
 const registerController = async (req, res) => {
-    const { name, email, address, password, phone,gender } = req.body;
+    const { name, email, address, password, phone,gender,securityQuestion } = req.body;
     if (!name) {
         res.json({success:false, message: "Name is Required" });
     }
@@ -19,6 +21,9 @@ const registerController = async (req, res) => {
     if (!phone) {
         res.json({success:false, message: "Phone is Required" });
     }
+    if (!securityQuestion) {
+        res.json({success:false, message: "Security Question is Required" });
+    }
     if (!gender) {
         res.json({success:false, message: "Gender is Required" });
     }
@@ -33,7 +38,7 @@ const registerController = async (req, res) => {
         }
         else {
             const hashedPassword = await hashPassword(password);
-            const user = await new User({ name, email, password: hashedPassword, address, phone,gender }).save();
+            const user = await new User({ name, email, password: hashedPassword, address, phone,gender,securityQuestion}).save();
             if (user) {
                 console.log(user);
                 res.json({ success:true,message: "User Registration Successful" });
@@ -49,7 +54,7 @@ const registerController = async (req, res) => {
 }
 
 
-// Login COntroller
+//======================== Login Controller=======================
 const loginController = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -95,9 +100,39 @@ const loginController = async (req, res) => {
         res.json({ message: "Problem Executing Login Function! Try Again" });
     }
 }
+
+
+// =========== FORGOT PASSWORD ====================
+const forgotPasswordController = async (req, res) => {
+    try {
+        const { email, OTP, newPassword } = req.body;
+        if (!email || !OTP || !newPassword) {
+            res.status(400).json({message:"Please Enter Every Field"})
+        }
+        else {
+            const userExist = await User.findOne({ email });
+            if (userExist) {
+                const hashedPassword = await hashPassword(newPassword);
+                if (OTP == process.env.OTP) {
+                   const pwdUpdate= await userModel.findByIdAndUpdate(userExist._id, { password: hashPassword });
+                    if (pwdUpdate) {
+                        res.json({ message: "OTP Verified,Password Updated",newpassword:newPassword,hashed:hashedPassword })
+                   }
+                }
+                else {
+                    res.json({message:"OTP Doesnot Match"})
+                }
+            }
+        }
+    } catch (error) {
+        res.status(400).json({ message: "Internal Server Error Occures" });
+        console.log(error)
+    }
+}
 module.exports = {
     registerController, 
     loginController,
+    forgotPasswordController
     // anotherMethod
 };
 
