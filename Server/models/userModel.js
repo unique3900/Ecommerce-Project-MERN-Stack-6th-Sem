@@ -26,9 +26,13 @@ const userSchema = new mongoose.Schema({
     },
     secretKey: {
         type: Number,
-        required: true,
+        default: 2222,
+        
     },
-
+    status: {
+        type: Boolean,
+        default:false,
+    },
     gender: {
         type: JSON,
         required: true,

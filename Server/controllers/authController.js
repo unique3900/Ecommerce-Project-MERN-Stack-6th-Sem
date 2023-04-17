@@ -8,7 +8,7 @@ const userOTPVerificationModel = require('../models/OtpModel');
 
 
 const registerController = async (req, res) => {
-    const { name, email, address, password, phone,gender,securityQuestion } = req.body;
+    const { name, email, address, password, phone,gender } = req.body;
     if (!name) {
         res.json({success:false, message: "Name is Required" });
     }
@@ -39,13 +39,10 @@ const registerController = async (req, res) => {
         }
         else {
             const hashedPassword = await hashPassword(password);
-            const secretKey =  Math.floor(1000 + Math.random() * 9000) ;
-            const user = await new User({ name, email, password: hashedPassword, address, phone,gender,secretKey}).save();
+            const user = await new User({ name, email, password: hashedPassword, address, phone,gender}).save();
             if (user) {
                 console.log(user);
                 res.json({ success: true, message: "User Registration Successful" });
-                
-                sendEmail(name,email,secretKey);
            }
             
         }
@@ -108,44 +105,59 @@ const loginController = async (req, res) => {
 
 // =========== FORGOT PASSWORD ====================
 const forgotPasswordController = async (req, res) => {
-    try {
-        const { email, otp, password } = req.body;
-        if (!email || !otp || !password) {
-            res.status(400).json({message:"Please Enter Every Field"})
-        }
-        else {
-            const userExist = await User.findOne({ email });
-            if (userExist) {
-                const hashedPassword = await hashPassword(password);
-                if (otp == userExist.secretKey) {
-                   const pwdUpdate= await userModel.findByIdAndUpdate(userExist._id, { password: hashedPassword });
-                    if (pwdUpdate) {
-                        res.json({success:true, message: "OTP Verified,Password Updated", newpassword: password, hashed: hashedPassword });
-                        console.log("SUccesss")
-                   }
-                }
-                else {
-                    res.json({success:false,message:"OTP Doesnot Match"})
-                }
-            }
-        }
-    } catch (error) {
-        res.status(400).json({ message: "Internal Server Error Occures" });
-        console.log(error)
-    }
+   try {
+       const { email, password, otp } = req.body;
+       const userExist = await User.findOne({ email });
+       if (userExist) {
+           const userOTP = userExist.secretKey;
+           if (otp == userOTP) {
+               const pwdUpdate = await userModel.findByIdAndUpdate(userExist._id, { password: password });
+               if (pwdUpdate) {
+                res.json({ message: "Password Updated" });
+               }
+           } else {
+            res.json({ message: "Invalid OTP" });
+           }
+       } else {
+           res.json({ message: "User Doesnot Exist" });
+       }
+   } catch (error) {
+    res.json({ message: "Internal Server Error,Couldnot send OTP"+error });
+   }
 }
 
+
+const verificationController = async (req, res) => {
+    try {
+        const { name, email } = req.body;
+        const userExist = await User.findOne({ email });
+        if (userExist) {
+            const secretKey =  Math.floor(1000 + Math.random() * 9000) ;
+            const otpUpdate = await userModel.findByIdAndUpdate(userExist._id, { secretKey: secretKey });
+            const mailAction = sendEmail(name, email, secretKey);
+            if (mailAction) {
+                res.json({ message: "OTP sent to your Email" });
+            }
+        }
+        else {
+            res.json({ message: "User Doesnot Exist" });
+        }
+    
+    } catch (error) {
+        res.json({ message: "Internal Server Error,Couldnot send OTP"+error });
+    }
+}
 
 const sendEmail=async (name,email,secretKey)=> {
     let testAccount = await nodemailer.createTestAccount();
 
       // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    host: 'smtp.ethereal.email',
+    port: 587,
     auth: {
-      user: "47dbdc423740f7",
-      pass: "85f73ab4555d22"
+        user: 'lorenza.davis@ethereal.email',
+        pass: 'xz3n6udewEubQuecn9'
     }
   });
     
@@ -163,7 +175,7 @@ const sendEmail=async (name,email,secretKey)=> {
         console.log("Couldnot send you secret key" )
   });
     if (mailsent) {
-      console.log("Mail sent")
+        res.json({ message: "OTP sent to your email" });
   }
 
 }
@@ -171,7 +183,7 @@ const sendEmail=async (name,email,secretKey)=> {
 module.exports = {
     registerController, 
     loginController,
-    forgotPasswordController
+    forgotPasswordController,verificationController
     // anotherMethod
 };
 

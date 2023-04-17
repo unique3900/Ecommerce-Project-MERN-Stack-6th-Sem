@@ -43,7 +43,11 @@ const ForgotPassword = () => {
         }
 
 
-}
+    }
+    
+    const ResendOTP = () => {
+        
+    }
   return (
 <div className='flex justify-center items-center h-screen bg-slate-200'>
             <div className="mt-14 w-[600px]  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
@@ -62,8 +66,12 @@ const ForgotPassword = () => {
                   </div>
                   
                   <div className="inputBox flex flex-col gap-1">
-                        <label htmlFor="email">Secret Key</label>
-                        <input type="text" name='otp' value={otp} onChange={(e) => setOtp(e.target.value)} className='outline-black border-b-2 px-2 rounded-md shadow-smpx-2' placeholder='Enter secret Key'/>
+                      <label htmlFor="email">Secret Key</label>
+                      <div className="relative  w-full ">
+                      <input type="text" name='otp' value={otp} onChange={(e) => setOtp(e.target.value)} className='outline-black border-b-2 px-2 rounded-md shadow-smpx-2 w-full ' placeholder='Enter secret Key' />
+                     <button className="absolute bg-red-500 text-white px-3 rounded-md right-2 " onClick={ResendOTP}>Resend</button>
+                      </div>
+
                         {
                             error&&!otp?<span className='bg-red-200 text-gray-500'>Key is Required</span>:""
                         }
