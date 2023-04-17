@@ -122,7 +122,7 @@ const forgotPasswordController = async (req, res) => {
            res.json({ message: "User Doesnot Exist" });
        }
    } catch (error) {
-    res.json({ message: "Internal Server Error,Couldnot send OTP"+error });
+    res.json({ message: "SMTP Server Error,Couldnot send OTP"+error });
    }
 }
 
