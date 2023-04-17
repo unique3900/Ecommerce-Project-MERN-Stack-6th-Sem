@@ -13,6 +13,7 @@ const ForgotPassword = () => {
 
     const [auth, setAuth] = useAuth();
 
+
     const navigate = useNavigate();
     const handleSubmit = async() => {
         if ( !email || !password ) {
@@ -44,10 +45,19 @@ const ForgotPassword = () => {
 
 
     }
-    
-    const ResendOTP = () => {
-        
+    const name = "User";
+    const SendOtp =async () => {
+        const fetchResponse = await axios.post('http://localhost:8080/api/v1/auth/send-verification', { name, email });
+        if (fetchResponse.data.success) {
+                   
+            toast.success(fetchResponse.data.message);
+        }
+        else {
+            toast.error(fetchResponse.data.message);
+         
+        }
     }
+
   return (
 <div className='flex justify-center items-center h-screen bg-slate-200'>
             <div className="mt-14 w-[600px]  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
@@ -69,7 +79,7 @@ const ForgotPassword = () => {
                       <label htmlFor="email">Secret Key</label>
                       <div className="relative  w-full ">
                       <input type="text" name='otp' value={otp} onChange={(e) => setOtp(e.target.value)} className='outline-black border-b-2 px-2 rounded-md shadow-smpx-2 w-full ' placeholder='Enter secret Key' />
-                     <button className="absolute bg-red-500 text-white px-3 rounded-md right-2 " onClick={ResendOTP}>Resend</button>
+                     <button className="absolute bg-red-500 text-white px-3 rounded-md right-2 " onClick={SendOtp}>Send</button>
                       </div>
 
                         {

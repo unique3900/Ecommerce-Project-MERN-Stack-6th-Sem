@@ -110,19 +110,20 @@ const forgotPasswordController = async (req, res) => {
        const userExist = await User.findOne({ email });
        if (userExist) {
            const userOTP = userExist.secretKey;
+           const hashedPassword=await hashPassword(password);
            if (otp == userOTP) {
-               const pwdUpdate = await userModel.findByIdAndUpdate(userExist._id, { password: password });
+               const pwdUpdate = await userModel.findByIdAndUpdate(userExist._id, { password: hashedPassword });
                if (pwdUpdate) {
-                res.json({ message: "Password Updated" });
+                res.json({ success: true, message: "Password Updated" });
                }
            } else {
-            res.json({ message: "Invalid OTP" });
+            res.json({ success: false, message: "Invalid OTP" });
            }
        } else {
-           res.json({ message: "User Doesnot Exist" });
+           res.json({ success: false, message: "User Doesnot Exist" });
        }
    } catch (error) {
-    res.json({ message: "SMTP Server Error,Couldnot send OTP"+error });
+    res.json({  success: false,message: "SMTP Server Error,Couldnot send OTP"+error });
    }
 }
 
@@ -136,15 +137,15 @@ const verificationController = async (req, res) => {
             const otpUpdate = await userModel.findByIdAndUpdate(userExist._id, { secretKey: secretKey });
             const mailAction = sendEmail(name, email, secretKey);
             if (mailAction) {
-                res.json({ message: "OTP sent to your Email" });
+                res.json({ success: true, message: "OTP sent to your Email" });
             }
         }
         else {
-            res.json({ message: "User Doesnot Exist" });
+            res.json({ success: false, message: "User Doesnot Exist" });
         }
     
     } catch (error) {
-        res.json({ message: "Internal Server Error,Couldnot send OTP"+error });
+        res.json({ success: false, message: "Internal Server Error,Couldnot send OTP"+error });
     }
 }
 
@@ -175,7 +176,7 @@ const sendEmail=async (name,email,secretKey)=> {
         console.log("Couldnot send you secret key" )
   });
     if (mailsent) {
-        res.json({ message: "OTP sent to your email" });
+        res.json({  success: true,message: "OTP sent to your email" });
   }
 
 }
