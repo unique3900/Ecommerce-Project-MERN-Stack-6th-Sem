@@ -106,23 +106,23 @@ const loginController = async (req, res) => {
 // ============ Change Password ================
 
 const changePasswordController = async (req, res) => {
-    const { email, password,oldPassword } = req.body;
+    const { email, password,otp } = req.body;
     try {
         
         const userExist = await User.findOne({ email });
         if (userExist) {
             const hashednewPassword = await hashPassword(password);
-            const hashedoldPassword = await hashPassword(oldPassword);
-            const matchPassword = await comparePassword(oldPassword, userExist.password);
-            if (!matchPassword) {
-                res.json({ success: false, message: "Old password Doesnot match" });
-            }
-            else {
-                
+
+            if (otp == userExist.secretKey) {
                 const pwdUpdate = await userModel.findByIdAndUpdate(userExist._id, { password: hashednewPassword });
                 if (pwdUpdate) {
                     res.json({ success: true, message: "Password Changed" });
                 }
+                
+            }
+            else {
+                res.json({ success: false, message: "Invalid OTP" });
+                
             }
             
         }
