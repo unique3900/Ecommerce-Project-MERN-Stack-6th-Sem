@@ -1,5 +1,5 @@
 const express = require('express');
-const {registerController, forgotPasswordController, verificationController} = require('../controllers/authController');
+const {registerController, forgotPasswordController, verificationController, changePasswordController} = require('../controllers/authController');
 const {loginController} = require('../controllers/authController');
 const requireSignIn = require('../middlewares/authMiddleware');
 
@@ -15,6 +15,9 @@ router.post('/forgot-password',forgotPasswordController);
 
 
 router.post('/send-verification', verificationController);
+
+
+router.post('/change-password',changePasswordController);
 router.get('/user-auth', requireSignIn, (req, res) => {
     res.status(200).json({valid:true})
 })

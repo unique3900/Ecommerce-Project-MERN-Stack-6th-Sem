@@ -103,6 +103,38 @@ const loginController = async (req, res) => {
 }
 
 
+// ============ Change Password ================
+
+const changePasswordController = async (req, res) => {
+    const { email, password,oldPassword } = req.body;
+    try {
+        
+        const userExist = await User.findOne({ email });
+        if (userExist) {
+            const hashednewPassword = await hashPassword(password);
+            const hashedoldPassword = await hashPassword(oldPassword);
+            const matchPassword = await comparePassword(oldPassword, userExist.password);
+            if (!matchPassword) {
+                res.json({ success: false, message: "Old password Doesnot match" });
+            }
+            else {
+                
+                const pwdUpdate = await userModel.findByIdAndUpdate(userExist._id, { password: hashednewPassword });
+                if (pwdUpdate) {
+                    res.json({ success: true, message: "Password Changed" });
+                }
+            }
+            
+        }
+        else {
+            res.json({ success: false, message: "User Doesnot Exist" });
+        }
+    } catch (error) {
+        res.json({ success: false, message: "Internal Server error"+error });
+    }
+   
+}
+
 // =========== FORGOT PASSWORD ====================
 const forgotPasswordController = async (req, res) => {
    try {
@@ -184,7 +216,7 @@ const sendEmail=async (name,email,secretKey)=> {
 module.exports = {
     registerController, 
     loginController,
-    forgotPasswordController,verificationController
+    forgotPasswordController,verificationController,changePasswordController
     // anotherMethod
 };
 
