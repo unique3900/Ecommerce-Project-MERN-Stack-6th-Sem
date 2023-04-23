@@ -2,7 +2,7 @@ import React from 'react'
 import { useAuth } from '../components/Context-State/auth'
 import { Link, useNavigate } from 'react-router-dom';
 
-const UserInfo = () => {
+const  UserInfo = () => {
     const [auth, setAuth] = useAuth();
 
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ const UserInfo = () => {
     const user = [auth.user];
     console.log(user)
     const changePassword = () => {
-        navigate('change-password');
+        navigate('/change-password');
     }
   
     return (
@@ -22,8 +22,8 @@ const UserInfo = () => {
             {/* Actions */}
                 <div className="flex flex-col py-5 gap-4 bg-slate-100 w-48 shadow-sm items-center">
                     <h4 className='font-bold text-xl'>Actions</h4>
-                   <button className="text-white bg-red-500 rounded-lg px-3 py-2" onClick={changePassword}>Change Password</button>
-                    <button className="text-white bg-blue-500 rounded-lg px-3 py-2">Update profile</button>
+                   <button className="text-white bg-red-500 rounded-lg px-3 py-2 w-full " onClick={changePassword}>Change Password</button>
+                    <button className="text-white bg-blue-500 rounded-lg px-3 py-2  w-full">Update profile</button>
                 </div>
                 
                 {/* User Data */}

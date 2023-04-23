@@ -27,10 +27,11 @@ const App = () => {
         <Route path="login" element={<Login />} />
         <Route path="/dashboard" element={<PrivateRoute/>} >
           <Route path='user' element={<Dashboard />} />
-          <Route path='user/change-password' element={<ChangePassword/>}/>
-        </Route>
-        <Route path="/dashboard" element={<AdminRoute/>} >
+          
           <Route path="admin"  element={<AdminDashboard />} />
+        </Route>
+        <Route path="" element={<AdminRoute/>} >
+        <Route path='change-password' element={<ChangePassword />} />
         </Route>
         
         <Route path="register" element={<Register />} />
