@@ -89,7 +89,8 @@ const loginController = async (req, res) => {
                             email: user.email,
                             address: user.address,
                             gender: user.gender,
-                            phone:user.phone
+                            phone: user.phone,
+                            designation:user.designation
                         },
 
                         token
@@ -158,6 +159,11 @@ const forgotPasswordController = async (req, res) => {
     res.json({  success: false,message: "SMTP Server Error,Couldnot send OTP"+error });
    }
 }
+
+
+       
+ 
+
 
 
 const verificationController = async (req, res) => {

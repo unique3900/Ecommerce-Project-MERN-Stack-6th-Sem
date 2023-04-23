@@ -14,6 +14,8 @@ import PrivateRoute from './routes/PrivateRoute'
 import UserInfo from './user/UserInfo'
 import ForgotPassword from './components/Auth/ForgotPassword'
 import ChangePassword from './components/Auth/ChangePassword'
+import AdminDashboard from './components/Admin/AdminDashboard'
+import AdminRoute from './routes/AdminRoute'
 const App = () => {
   return (
     <div>
@@ -23,11 +25,14 @@ const App = () => {
         <Route path="/" element={<Home/>} />
         <Route path="home" element={<Home/>} />
         <Route path="login" element={<Login />} />
-        <Route path="" element={<PrivateRoute/>} >
-          <Route path='dashboard' element={<Dashboard />} />
-          <Route path='userinfo' element={<UserInfo />} />
-          <Route path='change-password' element={<ChangePassword/>}/>
+        <Route path="/dashboard" element={<PrivateRoute/>} >
+          <Route path='user' element={<Dashboard />} />
+          <Route path='user/change-password' element={<ChangePassword/>}/>
         </Route>
+        <Route path="/dashboard" element={<AdminRoute/>} >
+          <Route path="admin"  element={<AdminDashboard />} />
+        </Route>
+        
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={ <ForgotPassword/>} />
         <Route path="products" element={ <h1>Products</h1> } />

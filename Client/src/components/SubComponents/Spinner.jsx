@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { SpinnerCircular, SpinnerDotted } from 'spinners-react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-const Spinner = () => {
-    const [count, setCount] = useState(5);
+const Spinner = ({path="login"}) => {
+    const [count, setCount] = useState(3);
     const navigate = useNavigate();
     useEffect(() => {
         const interval = setInterval(() => {
@@ -11,10 +11,11 @@ const Spinner = () => {
         }, 1000);
         if (count === 0) {
             toast.error("Sorry You dont have access to this page,kindly login");
-            navigate('/login');
+          localStorage.removeItem("auth");
+            navigate(`/home`);
        }
         return () => clearInterval(interval);
-      }, [count, navigate]);
+      }, [count, navigate,path]);
     
   return (
     <div className='h-screen flex flex-row justify-center align-middle place-items-center gap-3 '>

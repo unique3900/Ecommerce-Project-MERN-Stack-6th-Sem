@@ -63,7 +63,7 @@ const Navbar = () => {
                         <Link to="login" className='font-semibold'>Login</Link>
           
           </> : parsedLogCheck ? <>
-              <Link to='userinfo' className='font-bold capitalize '>Hi,{ parsedLogCheck.user.name.split(" ")[0]}</Link>
+              <Link to={`dashboard/${auth?.user?.designation===1?"admin":"user"}`} className='font-bold capitalize '>Hi,{ parsedLogCheck.user.name.split(" ")[0]}</Link>
           <div className="group flex relative">
           <FiLogOut className='w-10 h-8 font-bold cursor-pointer' onClick={(e)=>handleLogout(e)}/>
            <span className="group-hover:opacity-100 transition-opacity bg-gray-800 px-1 text-sm text-gray-100 rounded-md absolute left-1/2 

@@ -10,12 +10,12 @@ const UserInfo = () => {
     const user = [auth.user];
     console.log(user)
     const changePassword = () => {
-        navigate('/change-password');
+        navigate('change-password');
     }
   
     return (
       <>
-                    <h3 className='text-3xl text-center font-bold'>User Section</h3>
+            
         
             <div className='grid grid-rows-1 place-items-center lg:place-items-stretch items-center gap-3 justify-center lg:grid-cols-20/80 lg:justify-between lg:items-start  mt-4 mx-10'> 
                 

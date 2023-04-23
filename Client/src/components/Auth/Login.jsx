@@ -28,7 +28,8 @@ const Login = () => {
                         user: fetchResponse.data.user,
                         token: fetchResponse.data.token
                     });
-                    localStorage.setItem("auth", JSON.stringify(fetchResponse.data) );
+                    localStorage.setItem("auth", JSON.stringify(fetchResponse.data));
+                    // console.log( JSON.parse(localStorage.getItem("auth")).user);
                     navigate('/home');
                 }
                 else {
