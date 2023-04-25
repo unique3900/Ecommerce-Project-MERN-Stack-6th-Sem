@@ -8,7 +8,7 @@ const  UserInfo = () => {
     const navigate = useNavigate();
     const titles = [{ name: ['Name','Address','Gender','Email','Phone']}];
     const user = [auth.user];
-    console.log(user)
+    
     const changePassword = () => {
         navigate('/change-password');
     }

@@ -5,7 +5,8 @@ import { useAuth } from '../Context-State/auth'
 
 const AdminDashboard = () => {
     
-const [auth, setAuth] = useAuth();
+  const [auth, setAuth] = useAuth();
+
   return (
       <div className='mt-5'>
           <h3 className='text-4xl text-center font-bold'>Admin Dashboard</h3>

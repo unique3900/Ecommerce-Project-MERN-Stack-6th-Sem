@@ -18,26 +18,28 @@ const requireSignIn = async (req, res, next) => {
 // Admin Auth
 const isAdmin = async (req, res, next) => {
   try {
-    const email = "admin@admin.com";
-    const user = await userModel.findOne({ email });
-    console.log(user.designation);
-    if (user.designation == 1) {
-      next();
-      console.log("Success")
-    } else {
-      return res.status(401).send({
+      // const email = "admin@admin.com";
+      const email = req.body.email;
+      const user = await userModel.findOne({email });
+     
+      console.log(user.designation);
+      if (user.designation == 1) {
+        next();
+        console.log("Success")
+      } else {
+        return res.status(401).send({
+          success: false,
+          message: "UnAuthorized Access",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(401).send({
         success: false,
-        message: "UnAuthorized Access",
+        error,
+        message: "Error in admin middelware",
       });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(401).send({
-      success: false,
-      error,
-      message: "Error in admin middelware",
-    });
-  }
 };
 
 module.exports = { requireSignIn, isAdmin };

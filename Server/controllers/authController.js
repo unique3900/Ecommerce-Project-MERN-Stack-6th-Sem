@@ -161,6 +161,33 @@ const forgotPasswordController = async (req, res) => {
 }
 
 
+
+const isAdmins = async (req, res, next) => {
+    try {
+    //   const email = "admin@admin.com";
+      const {email} = req.body;
+      const user = await userModel.findOne({email });
+
+      if (user.designation == 1) {
+        next();
+        console.log("Success")
+      } else {
+        return res.status(401).send({
+          success: false,
+          message: "UnAuthorized Access",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(401).send({
+        success: false,
+        error,
+        message: "Error in admin middelware",
+      });
+    }
+  };
+
+
        
  
 
@@ -222,7 +249,7 @@ const sendEmail=async (name,email,secretKey)=> {
 module.exports = {
     registerController, 
     loginController,
-    forgotPasswordController,verificationController,changePasswordController
+    forgotPasswordController,verificationController,changePasswordController,isAdmins
     // anotherMethod
 };
 
