@@ -252,4 +252,3 @@ module.exports = {
     forgotPasswordController,verificationController,changePasswordController,isAdmins
     // anotherMethod
 };
-

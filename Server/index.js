@@ -7,7 +7,7 @@ const app = express();
 const cors = require('cors');
 
 const authRoutes=require('./routes/authRoutes');
-
+const categoryRoutes = require('./routes/categoryRoutes');
 
 mongoose.connect('mongodb://localhost:27017/ecommerce');
 
@@ -19,6 +19,7 @@ app.use(cors());
 
 // ROUTES
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/category', categoryRoutes);
 
 app.get('/', (req, res) => {
     res.json({ message: "Hello" });
