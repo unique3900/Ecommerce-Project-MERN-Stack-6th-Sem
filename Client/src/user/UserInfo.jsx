@@ -8,7 +8,7 @@ const  UserInfo = () => {
     const navigate = useNavigate();
     const titles = [{ name: ['Name','Address','Gender','Email','Phone']}];
     const user = [auth.user];
-    
+    console.log(user)
     const changePassword = () => {
         navigate('/change-password');
     }
@@ -20,14 +20,14 @@ const  UserInfo = () => {
             <div className='grid grid-rows-1 place-items-center lg:place-items-stretch items-center gap-3 justify-center lg:grid-cols-20/80 lg:justify-between lg:items-start  mt-4 mx-10'> 
                 
             {/* Actions */}
-                <div className="flex flex-col py-5 gap-4 bg-slate-100 w-48 shadow-sm items-center">
+                <div className="flex flex-col py-5 gap-4 bg-slate-100 lg:w-48 w-screen shadow-sm items-center">
                     <h4 className='font-bold text-xl'>Actions</h4>
-                   <button className="text-white bg-red-500 rounded-lg px-3 py-2 w-full " onClick={changePassword}>Change Password</button>
-                    <button className="text-white bg-blue-500 rounded-lg px-3 py-2  w-full">Update profile</button>
+                   <button className="text-white bg-red-500 rounded-lg px-3 py-2 w-fit " onClick={changePassword}>Change Password</button>
+                    <button className="text-white bg-blue-500 rounded-lg px-3 py-2  w-fit">Update profile</button>
                 </div>
                 
                 {/* User Data */}
-                <div className="bg-slate-200 shadow-md px-5 py-3">
+                <div className="bg-slate-200 shadow-md px-5 py-3 w-full ">
                     <div className="title">
                         <h4 className='font-bold text-xl border-black text-center '>User Information's</h4> 
                     </div>

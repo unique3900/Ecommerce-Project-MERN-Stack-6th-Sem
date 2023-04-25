@@ -16,6 +16,8 @@ import ForgotPassword from './components/Auth/ForgotPassword'
 import ChangePassword from './components/Auth/ChangePassword'
 import AdminDashboard from './components/Admin/AdminDashboard'
 import AdminRoute from './routes/AdminRoute'
+import CreateCategory from './components/Admin/CreateCategory'
+import NewProduct from './components/Admin/NewProduct'
 const App = () => {
   return (
     <div>
@@ -35,7 +37,9 @@ const App = () => {
         </Route>
 
         <Route path="/dashboard" element={<AdminRoute/>} >
-          <Route path="admin"  element={<AdminDashboard />} />
+          <Route path="admin" element={<AdminDashboard />} />
+          <Route path="admin/create-category" element={<CreateCategory/>} />
+          <Route path="admin/new-product" element={<NewProduct/>}  />
         </Route>
         
         <Route path="register" element={<Register />} />
