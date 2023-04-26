@@ -1,7 +1,7 @@
 const express = require('express');
 
 const {loginController} = require('../controllers/authController');
-const {requireSignIn,isAdmin} = require('../middlewares/authMiddleware');
+const {requireSignIn,isAdmin, isMyAdmin} = require('../middlewares/authMiddleware');
 const { createCategoryController, updateCategoryController, getCategoryController, getParticularCategory, getParticularCategoryController, deleteCategoryController } = require('../controllers/categoryController');
 
 
@@ -9,11 +9,11 @@ const { createCategoryController, updateCategoryController, getCategoryControlle
 const router = express();
 
 
-router.post('/create-category',isAdmin,requireSignIn, createCategoryController);
-router.put('/update-category/:_id', isAdmin, requireSignIn, updateCategoryController);
+router.post('/create-category',requireSignIn,isMyAdmin, createCategoryController);
+router.put('/update-category/:_id',requireSignIn, isMyAdmin, updateCategoryController);
 router.get('/get-category', getCategoryController);
-router.get('/get-one-category', getParticularCategoryController);
-router.delete('/delete-category/:_id', isAdmin, requireSignIn, deleteCategoryController);
+router.get('/get-one-category/:_id', getParticularCategoryController);
+router.delete('/delete-category/:_id',requireSignIn, isMyAdmin, deleteCategoryController);
 
 
 module.exports = router;

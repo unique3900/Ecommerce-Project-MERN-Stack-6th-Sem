@@ -8,7 +8,8 @@ const cors = require('cors');
 
 const authRoutes=require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
-
+const productRoutes = require('./routes/productRoutes');
+const formidableMiddleware = require('express-formidable');
 mongoose.connect('mongodb://localhost:27017/ecommerce');
 
 // Middlewares
@@ -20,6 +21,8 @@ app.use(cors());
 // ROUTES
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/category', categoryRoutes);
+app.use('/api/v1/product', productRoutes);
+
 
 app.get('/', (req, res) => {
     res.json({ message: "Hello" });

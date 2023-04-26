@@ -1,5 +1,6 @@
 const JWT = require('jsonwebtoken');
 const userModel = require('../models/userModel');
+const formidableMiddleware = require('express-formidable');
 
 const requireSignIn = async (req, res, next) => {
     try {
@@ -19,7 +20,8 @@ const requireSignIn = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
   try {
       // const email = "admin@admin.com";
-      const email = req.body.email;
+    const email = req.body.email;
+    
       const user = await userModel.findOne({email });
      
       console.log(user.designation);
@@ -42,4 +44,25 @@ const isAdmin = async (req, res, next) => {
     }
 };
 
-module.exports = { requireSignIn, isAdmin };
+const isMyAdmin=async (req, res, next) => {
+  try {
+    const user = await userModel.findById(req.user._id);
+    if (user.designation !== 1) {
+      return res.status(401).send({
+        success: false,
+        message: "UnAuthorized Access",
+      });
+    } else {
+      next();
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      success: false,
+      error,
+      message: "Error in admin middelware"+error,
+    });
+  }
+};
+
+module.exports = { requireSignIn, isAdmin,isMyAdmin };
