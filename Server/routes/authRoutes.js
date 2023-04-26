@@ -1,7 +1,7 @@
 const express = require('express');
 const {registerController, forgotPasswordController, verificationController, changePasswordController, isAdmins} = require('../controllers/authController');
 const {loginController} = require('../controllers/authController');
-const {requireSignIn,isAdmin} = require('../middlewares/authMiddleware');
+const {requireSignIn,isAdmin, isMyAdmin} = require('../middlewares/authMiddleware');
 
 
 // Router
@@ -26,7 +26,7 @@ router.get('/user-auth', requireSignIn, (req, res) => {
 })
 
 // Protected admin route
-router.post('/admin-auth', isAdmins, (req, res) => {
+router.post('/admin-auth',requireSignIn , isMyAdmin, (req, res) => {
    console.log(req.body)
     res.status(200).json({ valid: true });
    
