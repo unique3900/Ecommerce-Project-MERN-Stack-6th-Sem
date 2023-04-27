@@ -20,7 +20,8 @@ const CreateCategory = () => {
         
         if (fetchResponse.data.success) {
           toast.success(fetchResponse.data.message);
-          navigate('/dashboard/admin');
+          // navigate('/dashboard/admin/create-category');
+          window.location.reload(false);
         }
         else {
           toast.error(fetchResponse.data.message);
@@ -32,10 +33,11 @@ const CreateCategory = () => {
   }
   return (
     <div>
+         <ListCategories className="mt-5"/>
       {/* Boc */}
       <div className="flex flex-col justify-center items-center h-screen">
 
-        <div className=" grid grid-flow-row lg:grid-flow-col items-center align-middle lg:grid-cols-2 w-fit  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
+        <div className=" grid mt-0 grid-flow-row lg:grid-flow-col items-center align-middle lg:grid-cols-2 w-fit  bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
                     <div className="relative justify-center place-content-center">
                       <img className='lg:w-fit' src="https://www.bstones.in/wp-content/uploads/2020/08/Responsive-web-design-1.png" alt="" />
                     </div>
@@ -54,7 +56,7 @@ const CreateCategory = () => {
                     </div>
         </div>
         
-        <ListCategories className="mt-5"/>
+     
       </div>
 
 
