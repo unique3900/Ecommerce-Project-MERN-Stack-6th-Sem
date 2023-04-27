@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import ListCategories from './ListCategories';
 
 const CreateCategory = () => {
 
@@ -32,14 +33,14 @@ const CreateCategory = () => {
   return (
     <div>
       {/* Boc */}
-      <div className="flex justify-center items-center h-screen bg-slate-200">
+      <div className="flex flex-col justify-center items-center h-screen">
 
-        <div className=" grid grid-flow-row lg:grid-flow-col align-middle lg:grid-cols-2   mt-14 w-[800px]  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
+        <div className=" grid grid-flow-row lg:grid-flow-col items-center align-middle lg:grid-cols-2 w-fit  lg:mt-0 bg-slate-50 p-6 round-xl shadow-md shadow-slate-400">
                     <div className="relative justify-center place-content-center">
                       <img className='lg:w-fit' src="https://www.bstones.in/wp-content/uploads/2020/08/Responsive-web-design-1.png" alt="" />
                     </div>
                     <div className="">
-                      <h1 className='text-center text-4xl '>Create Category</h1>
+                      <h1 className='text-center text-4xl lg:text-6xl py-5 '>Create Category</h1>
                      
                               <label htmlFor="category">Enter New Product Category</label>
               <input type="text" name="category" placeholder='Enter Category Here' className='w-full mt-1 p-2 outline-8' onChange={(e) => setName(e.target.value)} id="" />
@@ -51,8 +52,12 @@ const CreateCategory = () => {
                                <button className='mt-5 bg-blue-500 p-2 w-full text-white' onClick={handleCreate} >Create New Category</button>
                     
                     </div>
-            </div>
         </div>
+        
+        <ListCategories className="mt-5"/>
+      </div>
+
+
     </div>
   )
 }
