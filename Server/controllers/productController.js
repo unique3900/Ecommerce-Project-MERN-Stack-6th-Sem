@@ -49,8 +49,8 @@ const getProductController = async (req, res) => {
 }
 const getParticularProduct = async (req, res) => {
     try {
-        const {slug } = req.params;
-        const findProduct = await Product.findOne({ slug });
+        const {_id } = req.params;
+        const findProduct = await Product.findOne({ _id });
         if (findProduct) {
             res.json({ success: true, message: 'Product Fetched Successfully',findProduct }).populate('category'); 
         }
