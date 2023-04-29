@@ -77,8 +77,8 @@ const NewProduct = () => {
     }
     return (
         <div className=''>
-            <h1 className="text-center text-6xl font-extrabold py-4">Product Management</h1>
-            <div className="flex flex-col justify-center items-center h-screen overflow-x-auto">
+            <h1 className="text-center text-4xl font-bold lg:text-6xl lg:font-extrabold py-4">Product Management</h1>
+            <div className="flex flex-col justify-center items-center h-full overflow-x-auto">
 
                 <div className=" grid mt-0 grid-flow-row lg:grid-flow-col items-center align-middle lg:grid-cols-2 w-fit  bg-slate-50 p-6 round-xl shadow-md shadow-slate-400 overflow-x-auto">
                     <div className="relative justify-center place-content-center">

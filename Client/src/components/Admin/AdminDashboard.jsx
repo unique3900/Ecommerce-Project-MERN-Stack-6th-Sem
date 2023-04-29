@@ -20,8 +20,8 @@ const AdminDashboard = () => {
             {/* Actions */}
                 <div className="flex flex-col py-5 gap-4 bg-slate-100  shadow-sm items-center w-screen lg:w-48 ">
                   <h4 className='font-bold text-xl'>Operation</h4>
-                <Link to='create-category'><button className="text-white bg-green-500 rounded-lg px-3 py-2 w-full" >Category Management</button></Link>  
-                <Link to='new-product'> <button className="text-white bg-purple-500 rounded-lg px-3 py-2 w-full">New Product</button></Link> 
+                <Link to='create-category'><button className="text-white bg-green-500 rounded-lg px-3 py-1 w-full">Category Management</button></Link>  
+                <Link to='new-product'> <button className="text-white bg-purple-500 rounded-lg px-3 py-2 w-full">Product Management</button></Link> 
                    
                 </div>
                 
