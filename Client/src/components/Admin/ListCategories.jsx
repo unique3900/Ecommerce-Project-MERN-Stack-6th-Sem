@@ -84,7 +84,7 @@ const ListCategories = () => {
              categories.map((item) => {
                  return (
                   
-                     <p key={item._id} onClick={() => { showModal(); setSelected(item.name);setSelectedId(item._id) }} className='bg-slate-200 px-2 py-1 flex items-center justify-center align-middle gap-2 cursor-pointer'>{item.name} <span><IoMdClose className='cursor-pointer text-red-500 font-extrabold scale-110' onClick={() => { handleDeleteCategory(item._id) }} /></span>
+                     <p key={item._id} onClick={() => { setSelected(item.name); showModal();setSelectedId(item._id) }} className='bg-slate-200 px-2 py-1 flex items-center justify-center align-middle gap-2 cursor-pointer'>{item.name} <span><IoMdClose className='cursor-pointer text-red-500 font-extrabold scale-110' onClick={() => { handleDeleteCategory(item._id) }} /></span>
      
                      </p> 
                   
@@ -99,8 +99,8 @@ const ListCategories = () => {
 
           </div>
 
-          <Modal title="Basic Modal" open={isModalOpen} footer={null}  onCancel={handleCancel}>
-              <input type="text" name='name' className='w-full px-2 py-2' defaultValue={selected } onChange={(e)=>{setName(e.target.value)}} />
+          <Modal title="Update Category" open={isModalOpen} footer={null}  onCancel={handleCancel}>
+              <input type="text" name='name' className='w-full px-2 py-2' value={selected}  onChange={(e) => { setName(e.target.value); setSelected(e.target.value)}} />
               <button className='mt-5 bg-blue-500 p-2 w-full text-white' onClick={() => { handleUpdate(selectedId) }}  >Update Category</button>
       </Modal>
     </div>
