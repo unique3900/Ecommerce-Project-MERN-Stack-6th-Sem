@@ -9,8 +9,6 @@ import './index.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from './components/Context-State/auth';
 
-
-
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 

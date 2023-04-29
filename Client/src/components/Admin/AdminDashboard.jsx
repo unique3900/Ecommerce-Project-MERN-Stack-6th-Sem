@@ -2,12 +2,14 @@ import React from 'react'
 import UserInfo from '../../user/UserInfo'
 import { useAuth } from '../Context-State/auth'
 import { Link } from 'react-router-dom'
+import PagenotFound from '../SubComponents/PagenotFound'
 
 const AdminDashboard = () => {
     
   const [auth, setAuth] = useAuth();
 
   return (
+
       <div className='mt-5'>
           <h3 className='text-4xl text-center font-bold'>Admin Dashboard</h3>
           <UserInfo />

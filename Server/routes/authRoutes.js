@@ -26,7 +26,7 @@ router.get('/user-auth', requireSignIn, (req, res) => {
 })
 
 // Protected admin route
-router.post('/admin-auth',requireSignIn , isMyAdmin, (req, res) => {
+router.get('/admin-auth',requireSignIn , isMyAdmin, (req, res) => {
    console.log(req.body)
     res.status(200).json({ valid: true });
    

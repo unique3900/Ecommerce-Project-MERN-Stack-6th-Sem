@@ -10,10 +10,7 @@ const AdminRoute = () => {
     const [auth, setAuth] = useAuth();
 
 
-    const data = JSON.parse(localStorage.getItem("auth"));
-    const myUser = data.user.email;
-    const [email, setEmail] = useState(myUser);
-    const [password, setPass] = useState("123");
+
 
     
     // const email = user[0].email;
@@ -22,7 +19,7 @@ const AdminRoute = () => {
         const authCheck = async () => {
             // const email = myUser;
             //COntext ma axios bydefault header included cha so no need to add header here
-            const fetchData = await axios.post('http://localhost:8080/api/v1/auth/admin-auth',{email,password});
+            const fetchData = await axios.get('http://localhost:8080/api/v1/auth/admin-auth');
             if (fetchData.data.valid) {
                 setValid(true);
             }
