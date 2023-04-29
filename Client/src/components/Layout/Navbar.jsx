@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import logo from '../../assets/logos/logo.png';
 import { FaSearch } from 'react-icons/fa';
@@ -6,16 +6,42 @@ import { FiLogOut } from 'react-icons/fi';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useAuth } from '../Context-State/auth';
 import { toast } from 'react-toastify';
+import { Select } from 'antd';
+import axios from 'axios';
+
+const { Option } = Select;
 const Navbar = () => {
 
   const navigate = useNavigate();
   const [auth, setAuth] = useAuth();
   const [username, setUsername] = useState();
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
   const LogCheck = localStorage.getItem("auth");
+
   const parsedLogCheck = JSON.parse(LogCheck);
   if (parsedLogCheck) {
     // setUsername(parsedLogCheck.user.name.split(" ")[0]) ;
   }
+
+  const getAllCategory = async () => {
+    try {
+        const {data} = await axios.get("http://localhost:8080/api/v1/category/get-category");
+    if (data.success) {
+        setCategories(data.getAllCategory);
+      }
+    else {
+      toast.error("Couldnot Fetch Category")
+      }
+    } catch (error) {
+        console.log(error)
+    }
+    
+  }
+  useEffect(() => {
+    getAllCategory();
+  }, [])
+  
   const handleLogout = (e) => {
     e.preventDefault();
     console.log("Logout")
@@ -49,13 +75,15 @@ const Navbar = () => {
               <Link to="home" className='underline'>Home</Link>
               {/* <Link to="category">Category</Link> */}
 
-              <select name="navSelectCategory" className='bg-transparent' placeholder='Category' id="">
-                    <option  disabled className='text-black'>Category</option>
-                      <option value="Electronics" className='text-black'>Electronics</option>
-                      <option value="Electronics" className='text-black'>Sneakers</option>
-                      <option value="Electronics" className='text-black'>Mens</option>
-                      <option value="Electronics" className='text-black'>Womens</option>
-                  </select>
+              <Select onChange={(value) => setCategory(value)} showSearch name="navSelectCategory" className='bg-transparent text-black ' placeholder='Category' id="">
+          {
+            categories.map((item) => {
+              return (
+                <Option className="bg-transparent" key={item._id} value={item.name}>{item.name}</Option>
+              )
+            })
+                   }
+                  </Select>
                   
         {
           !auth||!parsedLogCheck ? <>
