@@ -64,7 +64,7 @@ const NewProduct = () => {
               const {data} = await axios.post("http://localhost:8080/api/v1/product/create-product",productData);
               if (data.success) {
                   toast.success(data.message);
-                  navigate('/dashboard/admin');
+                  window.location.reload(false);
               }
               else {
                   toast.error(data.message);
