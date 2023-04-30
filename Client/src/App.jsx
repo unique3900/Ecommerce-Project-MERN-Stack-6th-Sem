@@ -18,6 +18,7 @@ import AdminDashboard from './components/Admin/AdminDashboard'
 import AdminRoute from './routes/AdminRoute'
 import CreateCategory from './components/Admin/CreateCategory'
 import NewProduct from './components/Admin/NewProduct'
+import UpdateProduct from './components/Admin/UpdateProduct'
 const App = () => {
   return (
     <div>
@@ -38,7 +39,8 @@ const App = () => {
 
         <Route path="/dashboard" element={<AdminRoute/>} >
           <Route path="admin" element={<AdminDashboard />} />
-          <Route path="admin/create-category" element={<CreateCategory/>} />
+          <Route path="admin/create-category" element={<CreateCategory />} />
+          <Route path="admin/new-product/:slug" element={<UpdateProduct/>} />
           <Route path="admin/new-product" element={<NewProduct/>}  />
         </Route>
         

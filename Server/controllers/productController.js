@@ -40,8 +40,11 @@ const getProductController = async (req, res) => {
     try {
         const productFetch = await Product.find({}).select("-image").limit(10).sort({ createdAt: -1 }).populate('category');
         if (productFetch) {
-             res.json({ success: true, message: 'Product Fetched Successfully',productFetch });
+             res.json({ success: true,productFetch });
         } 
+        else {
+            res.json({ success: false,productFetch });
+        }
     } catch (error) {
         res.json({ success: false, message: "Internal Server Error"+error });
     }
@@ -49,11 +52,16 @@ const getProductController = async (req, res) => {
 }
 const getParticularProduct = async (req, res) => {
     try {
-        const {_id } = req.params;
-        const findProduct = await Product.findOne({ _id });
-        if (findProduct) {
-            res.json({ success: true, message: 'Product Fetched Successfully',findProduct }).populate('category'); 
-        }
+        const product = await Product
+        .findOne({ slug: req.params.slug })
+        .select("-image")
+            .populate("category");
+        
+            res.status(200).send({
+                success: true,
+                message: "Single Product Fetched",
+                product,
+              });
     } catch (error) {
         res.json({ success: false, message: "Internal Server Error"+error });
 

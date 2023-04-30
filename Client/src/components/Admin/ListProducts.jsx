@@ -18,6 +18,7 @@ import {
     CardFooter,
     Typography
 } from "@material-tailwind/react";
+import { Link } from 'react-router-dom';
 const ListProducts = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [products, setProducts] = useState([]);
@@ -169,8 +170,8 @@ const ListProducts = () => {
                                     </div>
                                     
                                 <Typography variant="small" color="gray" className="flex gap-1">
-                                    <button className="bg-green-500 px-3 py-1 text-white">Edit</button>
-                                    <button className="bg-red-500 px-2 py-1 text-white" onClick={()=>{deleteProduct(item._id)}}>Delete</button>
+                                  <Link to={`/dashboard/admin/new-product/${item.slug}`}>  <button className="bg-green-500 px-3 py-1 text-white">Edit</button></Link>
+                                  <button className="bg-red-500 px-2 py-1 text-white" onClick={()=>{deleteProduct(item._id)}}>Delete</button>
                                 </Typography>
                             </CardFooter>
                             </Card>
