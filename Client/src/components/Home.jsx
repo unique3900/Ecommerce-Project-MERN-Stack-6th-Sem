@@ -36,7 +36,7 @@ const Home = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [checked, setChecked] = useState([]);
-    const [radio, setRadioPrice] = useState([]);
+    const [radio, setRadioPrice] = useState([100,999999]);
 
 
     const LogCheck = localStorage.getItem("auth");
@@ -105,6 +105,12 @@ const Home = () => {
           }
     }
 
+    const handleResetFilter = async () => {
+        setChecked([]);
+        setRadioPrice([100, 9999]);
+        window.location.reload(false);
+    }
+
     
     useEffect(() => {
         if (!checked.length || !radio.length) getAllProducts();
@@ -129,11 +135,11 @@ const Home = () => {
         <div title='Parashar Shop-Safe Secure Reliable' className='px-3'>
             <Hero/>
             <hr />
-            {
-                <h1>{ JSON.stringify(checked )  }</h1>
-            }
             <div className="mt-5 grid gap-3 grid-flow-row lg:grid-cols-20/80">
                 <div className='flex flex-col gap-4'>
+                    <div className="flex justify-center">
+                        <button className=" bg-slate-950 text-white rounded-md py-3 w-full" onClick={handleResetFilter}>Reset Filter</button>
+                    </div>
                     <div className="">
                         <h1 className='text-4xl font-bold text-center'>Price Range</h1>
                         <div className="flex flex-row flex-wrap text-center justify-evenly lg:flex-col gap-1">
@@ -169,7 +175,7 @@ const Home = () => {
                                     }>
                                              <Checkbox 
                                         className='bg-zinc-200 rounded-lg mt-2 hover:bg-blue-500 ease-in transition duration-300 text-black px-3 py-1 cursor-pointer'
-                                        
+                                          
                                         onChange={
                                             (e) => {
                                                 handleFilter(e.target.checked, item._id);
