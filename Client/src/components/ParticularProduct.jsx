@@ -46,42 +46,30 @@ const ParticularProduct = () => {
     }, [])
 
     return (
-        <div className='flex flex-col justify-center items-center h-screen bg-slate-300 '>
-            {/* <h1 className="text-4xl text-center">Buy Now</h1> */}
-            <div className=" grid grid-col grid-cols-40/60 shadow-md bg-white">
-                <div className="h-full">
-                    <img src={
-                            `http://localhost:8080/api/v1/product/get-product-image/${
-                                product._id
-                            }`
-                        }
-                        alt=""/>
-                </div>
-                <div className="relative flex flex-col gap-4">
-                    <div className="px-4 py-3">
-                        <h1 className='text-center text-3xl '>
-                            {
-                            product.name
-                        }</h1>
+        <> {/* Boc */}
+            <div className=" flex flex-col justify-center items-center h-screen">
 
-                        <h3 className="text-gray-400">
-                            {
-                            product.description
-                }</h3>
-              
-              <div className="mt-10">
-                <div className="flex flex-col lg:flex-row justify-around">
-                <p className=" text-red font-bold">NRS {product.price }</p>
-              <button className="bg-blue-500 px-2 py-1 text-white">Add To Cart</button>
-                </div>
-               
-              </div>
+                <div className="overflow-auto grid mt-0 grid-flow-row lg:grid-flow-col items-center align-middle lg:grid-cols-2 w-fit   p-6 round-xl shadow-md shadow-slate-400">
+                    <div className="relative justify-center place-content-center">
+                        <img className='lg:w-fit lg:h-[500px] h-64' src={`http://localhost:8080/api/v1/product/get-product-image/${product._id}`} alt=""/>
+                    </div>
+                    <div className="">
+              <h1 className='text-center text-4xl lg:text-6xl py-5 '>{product.name}</h1>
+
+                        <div className="form grid grid-flow-row  gap-2  mt-5 px-4">
+
+                <p className="text-gray-400 text-center">{ product.description}</p>
+                            
+                <p className="text-red-500 font-bold text-3xl p-2">NPR {product.price }/-</p>
+                        </div>
+                        <button className='mx-3 mt-5 bg-blue-500 p-2 w-full text-white'>Add to Cart</button>
+
                     </div>
                 </div>
-
             </div>
 
-        </div>
+
+        </>
     )
 }
 
