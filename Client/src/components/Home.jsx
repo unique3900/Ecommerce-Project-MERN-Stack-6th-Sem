@@ -17,8 +17,10 @@ import {
     CardFooter,
     Typography
 } from "@material-tailwind/react";
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
+    const navigate = useNavigate();
     const [auth, setAuth] = useAuth();
     const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -63,6 +65,7 @@ const Home = () => {
         console.log(name);
     }
 
+
     return (
         <div title='Parashar Shop-Safe Secure Reliable' className='px-3'>
             <Hero/>
@@ -91,10 +94,11 @@ const Home = () => {
                         products.slice(0, 10).map((item) => {
 
                             return (
+                                <Link to={`product/${item.slug}`} key={item._id}>
                                 <Card className="w-96"
                                     key={
                                         item._id
-                                }>
+                                    } >
                                     <CardHeader color="blue" className="relative h-56">
                                         <img src={
                                                 `http://localhost:8080/api/v1/product/get-product-image/${
@@ -110,7 +114,8 @@ const Home = () => {
                                             item.name
                                         } </Typography>
                                         <Typography> {
-                                            item.description
+                                                item.description.length>40?item.description.slice(0,40)+"......Read More" :item.description
+                                                
                                         } </Typography>
                                     </CardBody>
                                     <CardFooter divider className="flex items-center justify-between py-3">
@@ -130,7 +135,8 @@ const Home = () => {
                                         </Typography>
 
                                     </CardFooter>
-                                </Card>
+                                    </Card>
+                                    </Link>
                             )
                         })
                     } </div>
