@@ -17,6 +17,9 @@ const Navbar = () => {
   const [username, setUsername] = useState();
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
+  const [products, setProducts] = useState([]);
+    const [checked, setChecked] = useState([]);
+    const [radio, setRadioPrice] = useState([100,999999]);
   const LogCheck = localStorage.getItem("auth");
 
   const parsedLogCheck = JSON.parse(LogCheck);
@@ -54,32 +57,77 @@ const Navbar = () => {
     toast.success("User Logged Out")
     navigate('/login');
   }
+
+
+
+  const getAllProducts = async () => {
+    try {
+        const {
+            data
+        } = await axios.get("http://localhost:8080/api/v1/product/get-product");
+        if (data.success) {
+            setProducts(data.productFetch);
+            
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
+
+}
+
+
+const handleFilter = (value, id) => {
+    let all = [...checked];
+    if (value) {
+      all.push(id);
+    } else {
+      all = all.filter((c) => c !== id);
+    }
+    setChecked(all);
+}
+
+
+const filterProduct = async () => {
+    try {
+        const { data } = await axios.post("http://localhost:8080/api/v1/product/filter-product-by-category", {
+      category
+        });
+      console.log(data.products);
+        setProducts(data.products);
+      } catch (error) {
+        console.log(error);
+      }
+}
+
+
+
   return (
-    <div className='flex z-1 lg:justify-between sm:justify-evenly w-full gap-8 bg-[#2874f0] px-4 py-2 items-center flex-1'>
+    <div className='flex flex-wrap lg:flex-nowrap justify-center z-1 lg:justify-between  w-full gap-8 bg-[#2874f0] px-4 py-2 items-center flex-1'>
       
           {/* Logo */}
           <div className="logo">
-             <Link to="home"> <img src={logo} className='hidden md:flex lg:flex h-7 w-full lg:h-14' alt="" /></Link>
+             <Link to="home"> <img src={logo} className=' md:flex lg:flex h-7 w-full lg:h-14' alt="" /></Link>
           </div>
           
           {/* Middle */}
-          <div className='hidden px-2 w-3/5 relative lg:flex items-center'>
-              <input type="search" name="navSearch" className='outline-0 py-1 px-3 rounded-full flex-1' placeholder='Search....' id="" />
-              <div  className='bg-[#ffc220] p-1.5 rounded-full absolute  right-5 ' >
+          <div className=' px-2 w-fit lg:w-3/5 relative lg:flex items-center'>
+              <input type="search" name="navSearch" className=' outline-0 py-1 px-3 rounded-full flex-1' placeholder='Search....' id="" />
+              <div  className='bg-[#ffc220] p-1.5 rounded-full absolute bottom-0.5  right-5 ' >
               <FaSearch className='text-black'/>
               </div>
           </div>
 
           {/* Right */}
-          <div className='flex items-center text-white gap-3'>
+          <div className='flex  items-center text-white gap-3'>
               <Link to="home" className='underline'>Home</Link>
               {/* <Link to="category">Category</Link> */}
 
-              <Select onChange={(value) => setCategory(value)} showSearch name="navSelectCategory" className='bg-transparent text-black ' placeholder='Category' id="">
+        <Select   onChange={(value) => {setCategory(value)}} showSearch name="navSelectCategory" className='hidden md:flex lg:flex bg-transparent text-black ' placeholder='Category' id="">
           {
             categories.map((item) => {
               return (
-                <Option className="bg-transparent" key={item._id} value={item.name}>{item.name}</Option>
+                <Option className="bg-transparent" key={item._id} value={item._id}>{item.name}</Option>
               )
             })
                    }

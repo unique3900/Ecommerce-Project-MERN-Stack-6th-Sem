@@ -155,4 +155,64 @@ const filterProductCategory = async (req, res) => {
 
 }
 
-module.exports={createProductController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory}
+
+
+const productCountController = async (req, res) => {
+    try {
+        const totalCount = await Product.find({}).estimatedDocumentCount();
+        if (totalCount) {
+            res.json({ success: true, totalCount });
+        }
+        else {
+            res.json({ success: false, message:"Error in total fetch" });
+        }
+        
+     
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+          success: false,
+          message: "Error WHile Counting Product",
+          error,
+        });
+    }
+}
+
+
+const productPerPage = async (req, res) => {
+    try {
+        const productsPerpage = 5;
+        const page = req.params.page ? req.params.page : 1;
+        const products = await Product.find({}).select("-image").skip((page-1)*productsPerpage).limit(productsPerpage).sort({createdAt:-1});
+
+        res.json({ success: true, products });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+          success: false,
+          message: "Error WHile fetching Product Per page",
+          error,
+        });
+    }
+}
+// const filterProductByCategory = async (req, res) => {
+//     try {
+//         const { category } = req.body;
+        
+//         const products = await Product.find({category});
+//         res.status(200).send({
+//           success: true,
+//           products,
+//         });
+//       } catch (error) {
+//         console.log(error);
+//         res.status(400).send({
+//           success: false,
+//           message: "Error WHile Filtering Products",
+//           error,
+//         });
+//       }
+
+// }
+
+module.exports={createProductController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory,productCountController,productPerPage}

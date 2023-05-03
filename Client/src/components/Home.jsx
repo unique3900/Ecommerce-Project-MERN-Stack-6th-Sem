@@ -37,15 +37,18 @@ const Home = () => {
     const [categories, setCategories] = useState([]);
     const [checked, setChecked] = useState([]);
     const [radio, setRadioPrice] = useState([100,999999]);
-
+    const [totalProduct, setTotalProduct] = useState(0);
+    const [page, setPage] =useState(1);
 
     const LogCheck = localStorage.getItem("auth");
     const parsedLogCheck = JSON.parse(LogCheck);
 
 
 
+
     useEffect(() => {
         getAllCategory();
+        totalP();
         if (!parsedLogCheck) {
             toast.error("Logged in as Guest");
         }
@@ -55,9 +58,9 @@ const Home = () => {
         try {
             const {
                 data
-            } = await axios.get("http://localhost:8080/api/v1/product/get-product");
+            } = await axios.get(`http://localhost:8080/api/v1/product/product-listing/${page}`);
             if (data.success) {
-                setProducts(data.productFetch);
+                setProducts(data.products);
                 
             }
         } catch (error) {
@@ -65,6 +68,41 @@ const Home = () => {
         }
 
 
+    }
+
+    useEffect(() => {
+        getAllProducts();
+    }, [products])
+    
+    const loadMoreProducts = async () => {
+        try {
+            const {
+                data
+            } = await axios.get(`http://localhost:8080/api/v1/product/product-listing/${page}`);
+            if (data.success) {
+                setProducts([...products, ...data.products]);
+                console.log(products);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+    const totalP = async () => {
+        try {
+            const { data } = await axios.get("http://localhost:8080/api/v1/product/count-product");
+            if (data) {
+                setTotalProduct(data.totalCount);
+            }
+            else {
+                toast.error("Set totel error")
+            }
+            
+
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const getAllCategory = async () => {
@@ -81,6 +119,10 @@ const Home = () => {
 
     }
 
+
+
+ 
+
     const handleFilter = (value, id) => {
         let all = [...checked];
         if (value) {
@@ -92,6 +134,8 @@ const Home = () => {
     }
 
 
+
+    
     const filterProduct = async () => {
         try {
             const { data } = await axios.post("http://localhost:8080/api/v1/product/filter-product", {
@@ -197,18 +241,19 @@ const Home = () => {
 
                 <div>
                     <h1 className='text-4xl font-bold text-center'>Latest Products</h1>
-                    <div className="overflow-x-auto grid grid-flow-row gap-8 text-neutral-600 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-5">
+                    <h1>{totalProduct}</h1> 
+                    <div className="overflow-x-hidden grid grid-flow-row gap-8 text-neutral-600 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-5">
 
 
                         {
 
-                        products.map((item) => {
+                        products.map((item,index) => {
 
                             return (
 
-                                <Card className="w-96"
+                                <Card className="w-96 cursor-grab hover:scale-105 transition-all duration-75"
                                     key={
-                                        item._id
+                                        index
                                 }>
                                     <CardHeader color="blue" className="relative h-56">
                                         <img src={
@@ -258,7 +303,20 @@ const Home = () => {
 
                             )
                         })
-                    } </div>
+                        } </div>
+                    
+                    <div className="flex justify-between px-3">
+                        
+                        {
+                            page==1? <button className='bg-gray-500 text-white px-2 py-2' disabled>Previous</button>:<button className='bg-black text-white px-2 py-2' onClick={()=>setPage(page-1)}>Previous</button>
+                        }
+
+                        
+{
+                            page>=totalProduct/5? <button className='bg-gray-500 text-white px-2 py-2' disabled>Next</button>:<button className='bg-black text-white px-2 py-2' onClick={()=>setPage(page+1)}>Next</button>
+                        }
+                        
+                  </div>
                 </div>
 
             </div>
