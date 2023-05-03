@@ -30,80 +30,18 @@ import {
 import { Checkbox } from 'antd';
 
 const Home = () => {
-    const navigate = useNavigate();
     const [auth, setAuth] = useAuth();
 
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [checked, setChecked] = useState([]);
-    const [radio, setRadioPrice] = useState([100,999999]);
+    const [radio, setRadioPrice] = useState([]);
     const [totalProduct, setTotalProduct] = useState(0);
-    const [page, setPage] =useState(1);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] =useState(false);
 
     const LogCheck = localStorage.getItem("auth");
     const parsedLogCheck = JSON.parse(LogCheck);
-
-
-
-
-    useEffect(() => {
-        getAllCategory();
-        totalP();
-        if (!parsedLogCheck) {
-            toast.error("Logged in as Guest");
-        }
-    }, []);
-
-    const getAllProducts = async () => {
-        try {
-            const {
-                data
-            } = await axios.get(`http://localhost:8080/api/v1/product/product-listing/${page}`);
-            if (data.success) {
-                setProducts(data.products);
-                
-            }
-        } catch (error) {
-            console.log(error)
-        }
-
-
-    }
-
-    useEffect(() => {
-        getAllProducts();
-    }, [products])
-    
-    const loadMoreProducts = async () => {
-        try {
-            const {
-                data
-            } = await axios.get(`http://localhost:8080/api/v1/product/product-listing/${page}`);
-            if (data.success) {
-                setProducts([...products, ...data.products]);
-                console.log(products);
-            }
-        } catch (error) {
-            console.log(error)
-        }
-
-    }
-    const totalP = async () => {
-        try {
-            const { data } = await axios.get("http://localhost:8080/api/v1/product/count-product");
-            if (data) {
-                setTotalProduct(data.totalCount);
-            }
-            else {
-                toast.error("Set totel error")
-            }
-            
-
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     const getAllCategory = async () => {
         try {
@@ -119,9 +57,70 @@ const Home = () => {
 
     }
 
+    useEffect(() => {
+        getAllCategory();
+        totalP();
+        if (!parsedLogCheck) {
+            toast.error("Logged in as Guest");
+        }
+    }, []);
+
+    useEffect(() => {
+        getAllProducts();
+    }, [])
+
+    const getAllProducts = async () => {
+        try {
+            setLoading(true);
+            const {
+                data
+            } = await axios.get(`http://localhost:8080/api/v1/product/product-listing/${page}`);
+                setLoading(false);
+                setProducts(data.products);
+        } catch (error) {
+            setLoading(true);
+            console.log(error)
+        }
 
 
- 
+    }
+
+
+    
+
+    const totalP = async () => {
+        try {
+            const { data } = await axios.get("http://localhost:8080/api/v1/product/count-product");
+            if (data) {
+                setTotalProduct(data.totalCount);
+            } 
+            else {
+                toast.error("Set totel error")
+            } 
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        if (page === 1) return;
+        loadMoreProducts();
+    }, [page]);
+
+    const loadMoreProducts = async () => {
+        try {
+            setLoading(true);
+            const {
+                data
+            } = await axios.get(`http://localhost:8080/api/v1/product/product-listing/${page}`);
+                setLoading(false);
+                setProducts([...products, ...data?.products]);
+        } catch (error) {
+            setLoading(false);
+            console.log(error)
+        }
+
+    }
 
     const handleFilter = (value, id) => {
         let all = [...checked];
@@ -133,9 +132,14 @@ const Home = () => {
         setChecked(all);
     }
 
-
-
+    useEffect(() => {
+        if (!checked.length || !radio.length) getAllProducts();
+      }, [checked.length, radio.length]);
     
+      useEffect(() => {
+        if (checked.length || radio.length) filterProduct();
+      }, [checked, radio]);
+
     const filterProduct = async () => {
         try {
             const { data } = await axios.post("http://localhost:8080/api/v1/product/filter-product", {
@@ -156,13 +160,7 @@ const Home = () => {
     }
 
     
-    useEffect(() => {
-        if (!checked.length || !radio.length) getAllProducts();
-      }, [checked.length, radio.length]);
-    
-      useEffect(() => {
-        if (checked.length || radio.length) filterProduct();
-      }, [checked, radio]);
+
 
 
 
@@ -305,7 +303,7 @@ const Home = () => {
                         })
                         } </div>
                     
-                    <div className="flex justify-between px-3">
+                    {/* <div className="flex justify-between px-3">
                         
                         {
                             page==1? <button className='bg-gray-500 text-white px-2 py-2' disabled>Previous</button>:<button className='bg-black text-white px-2 py-2' onClick={()=>setPage(page-1)}>Previous</button>
@@ -316,7 +314,19 @@ const Home = () => {
                             page>=totalProduct/5? <button className='bg-gray-500 text-white px-2 py-2' disabled>Next</button>:<button className='bg-black text-white px-2 py-2' onClick={()=>setPage(page+1)}>Next</button>
                         }
                         
-                  </div>
+                  </div> */}
+                    
+                    <div className="flex justify-center px-3">
+                        {
+                            products && products.length < totalProduct && (
+                                <button onClick={(e) => {
+                                    e.preventDefault();
+                                    setPage(page + 1);
+
+                                }} className='bg-transparent text-blue-500 underline mt-3 px-2 py-2'>{loading?"......Loading":products.length<=totalProduct?"Show More Items":"No more Items to Fetch" }</button>
+                            )
+                        }
+                    </div>
                 </div>
 
             </div>

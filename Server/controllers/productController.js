@@ -181,9 +181,13 @@ const productCountController = async (req, res) => {
 
 const productPerPage = async (req, res) => {
     try {
-        const productsPerpage = 5;
+        const productsPerpage = 2;
         const page = req.params.page ? req.params.page : 1;
-        const products = await Product.find({}).select("-image").skip((page-1)*productsPerpage).limit(productsPerpage).sort({createdAt:-1});
+        const products = await Product.find({})
+        .select("-image")
+        .skip((page - 1) * productsPerpage)
+        .limit(productsPerpage)
+        .sort({ createdAt: -1 });
 
         res.json({ success: true, products });
     } catch (error) {
