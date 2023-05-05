@@ -181,7 +181,7 @@ const productCountController = async (req, res) => {
 
 const productPerPage = async (req, res) => {
     try {
-        const productsPerpage = 2;
+        const productsPerpage = 5;
         const page = req.params.page ? req.params.page : 1;
         const products = await Product.find({})
         .select("-image")
@@ -197,6 +197,28 @@ const productPerPage = async (req, res) => {
           message: "Error WHile fetching Product Per page",
           error,
         });
+    }
+}
+
+const productSearchController = async (req, res) => {
+    try {
+        const { keyword } = req.params;
+        const results = await Product
+      .find({
+        $or: [
+          { name: { $regex: keyword, $options: "i" } },
+          { description: { $regex: keyword, $options: "i" } },
+        ],
+      })
+      .select("-imege");
+    res.json(results);
+
+    } catch (error) {
+        res.status(400).send({
+            success: false,
+            message: "Error While searching Product",
+            error,
+          });
     }
 }
 // const filterProductByCategory = async (req, res) => {
@@ -219,4 +241,4 @@ const productPerPage = async (req, res) => {
 
 // }
 
-module.exports={createProductController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory,productCountController,productPerPage}
+module.exports={createProductController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory,productCountController,productPerPage,productSearchController}

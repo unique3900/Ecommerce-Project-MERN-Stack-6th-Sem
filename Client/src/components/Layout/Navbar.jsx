@@ -8,6 +8,7 @@ import { useAuth } from '../Context-State/auth';
 import { toast } from 'react-toastify';
 import { Select } from 'antd';
 import axios from 'axios';
+import SearchBoxNav from '../SubComponents/SearchBoxNav';
 
 const { Option } = Select;
 const Navbar = () => {
@@ -111,12 +112,7 @@ const filterProduct = async () => {
           </div>
           
           {/* Middle */}
-          <div className=' px-2 w-fit lg:w-3/5 relative lg:flex items-center'>
-              <input type="search" name="navSearch" className=' outline-0 py-1 px-3 rounded-full flex-1' placeholder='Search....' id="" />
-              <div  className='bg-[#ffc220] p-1.5 rounded-full absolute bottom-0.5  right-5 ' >
-              <FaSearch className='text-black'/>
-              </div>
-          </div>
+      <SearchBoxNav/>
 
           {/* Right */}
           <div className='flex  items-center text-white gap-3'>

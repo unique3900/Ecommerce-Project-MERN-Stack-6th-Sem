@@ -237,10 +237,10 @@ const Home = () => {
                 </div>
 
 
-                <div>
+                <div className=''>
                     <h1 className='text-4xl font-bold text-center'>Latest Products</h1>
-                    <h1>{totalProduct}</h1> 
-                    <div className="overflow-x-hidden grid grid-flow-row gap-8 text-neutral-600 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-5">
+                   
+                    <div className="overflow-x-clip grid grid-flow-row gap-8 text-neutral-600 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-5">
 
 
                         {
@@ -249,11 +249,12 @@ const Home = () => {
 
                             return (
 
-                                <Card className="w-96 cursor-grab hover:scale-105 transition-all duration-75"
+                                <Card className="w-96 cursor-grab hover:scale-105 transition-all duration-50"
                                     key={
                                         index
                                 }>
                                     <CardHeader color="blue" className="relative h-56">
+                                      
                                         <img src={
                                                 `http://localhost:8080/api/v1/product/get-product-image/${
                                                     item._id
@@ -261,6 +262,19 @@ const Home = () => {
                                             }
                                             alt="img-blur-shadow"
                                             className="h-full w-full"/>
+                                        <p className="absolute top-2 text-sm right-3 rounded-full text-white bg-red-500 px-3 py-1">
+                                        {categories.map((e) => {
+                                            return (
+                                                <span className="" key={e._id}>
+                                                    {e._id === item.category ?
+                                                       e.name  :""
+                                                }
+                                                        </span>
+                                                    )
+                                                })}
+
+                                       </p>
+      
                                     </CardHeader>
                                     <Link to={
                                             `product/${
@@ -281,7 +295,7 @@ const Home = () => {
                                         </CardBody>
                                     </Link>
                                     <CardFooter divider className="flex items-center justify-between py-3">
-                                        <div className="flex flex-col">
+                                        <div className="flex justify-around flex-col">
                                             <Typography variant="small">Nrs. {
                                                 item.price
                                             }</Typography>
@@ -292,6 +306,7 @@ const Home = () => {
                                                 pcs</Typography>
 
                                         </div>
+
                                         <Typography variant="small">
                                             <button className="bg-blue-500 px-3 py-2 text-white rounded-sm">Add to Cart</button>
                                         </Typography>
@@ -315,18 +330,22 @@ const Home = () => {
                         }
                         
                   </div> */}
-                    
-                    <div className="flex justify-center px-3">
-                        {
-                            products && products.length < totalProduct && (
-                                <button onClick={(e) => {
-                                    e.preventDefault();
-                                    setPage(page + 1);
+                    {
+                        checked.length<=0  && radio.length<=0 && (
+                            <div className="flex justify-center px-3">
+                            {
+                                products && products.length < totalProduct &&  (
+                                    <button onClick={(e) => {
+                                        e.preventDefault();
+                                        setPage(page + 1);
+    
+                                    }} className='bg-transparent text-blue-500 underline mt-3 px-2 py-2'>{loading?"......Loading":products.length<=totalProduct?"Show More Items":"No more Items to Fetch" }</button>
+                                )
+                            }
+                        </div>
+                        )
+                    }
 
-                                }} className='bg-transparent text-blue-500 underline mt-3 px-2 py-2'>{loading?"......Loading":products.length<=totalProduct?"Show More Items":"No more Items to Fetch" }</button>
-                            )
-                        }
-                    </div>
                 </div>
 
             </div>
