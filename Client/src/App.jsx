@@ -20,6 +20,7 @@ import CreateCategory from './components/Admin/CreateCategory'
 import NewProduct from './components/Admin/NewProduct'
 import UpdateProduct from './components/Admin/UpdateProduct'
 import ParticularProduct from './components/ParticularProduct'
+import SearchPage from './components/SearchPage'
 const App = () => {
   return (
     <div>
@@ -49,7 +50,8 @@ const App = () => {
         <Route path="forgot-password" element={ <ForgotPassword/>} />
         <Route path="product/:slug" element={<ParticularProduct />} />
         <Route path="home/product/:slug" element={ <ParticularProduct/> } />
-        <Route path="category" element={ <h1>Categories</h1> } />
+        <Route path="category" element={<h1>Categories</h1>} />
+        <Route path="search" element={<SearchPage/>}/>
       </Routes>
 
       {/* <Hero/> */}
