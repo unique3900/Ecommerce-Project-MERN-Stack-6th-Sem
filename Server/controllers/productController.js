@@ -221,6 +221,22 @@ const productSearchController = async (req, res) => {
           });
     }
 }
+
+
+const similarProductController = async (req, res) => {
+    try {
+        const { name } = req.params;
+        const fetchData = await Product.findById({ name });
+        res.json(fetchData);
+
+    } catch (error) {
+        res.status(400).send({
+            success: false,
+            message: "Error While searching Product",
+            error,
+          });
+    }
+}
 // const filterProductByCategory = async (req, res) => {
 //     try {
 //         const { category } = req.body;
@@ -241,4 +257,4 @@ const productSearchController = async (req, res) => {
 
 // }
 
-module.exports={createProductController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory,productCountController,productPerPage,productSearchController}
+module.exports={createProductController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory,productCountController,productPerPage,productSearchController,similarProductController}

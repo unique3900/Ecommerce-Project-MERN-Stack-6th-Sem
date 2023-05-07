@@ -9,10 +9,12 @@ import {
 import Recommended from './Recommended';
 
 
+
 const ParticularProduct = () => {
     const params = useParams();
     const [product, setProduct] = useState([]);
     const [name, setSelectedName] = useState("");
+    const [slug, setSlug] = useState("");
     const [description, setSelectedDesc] = useState("");
     const [price, setSelectedPrice] = useState("");
     const [quantity, setSelectedQuantity] = useState("");
@@ -30,7 +32,9 @@ const ParticularProduct = () => {
             }`);
             console.log(data);
             setProduct(data.product);
+            setCategory(data.product.category);
             setId(data.product._id);
+            setSlug(params.slug);
             setSelectedName(data.product.name);
             setSelectedDesc(data.product.description);
             setSelectedPrice(data.product.price);
@@ -87,7 +91,7 @@ const ParticularProduct = () => {
             {/* Recommended Products Page */}
             <div className="">
                 <h3 className="text-center text-4xl">Recommended</h3>
-                <Recommended/>
+                <Recommended slug={slug}  productCat={JSON.stringify(category._id) }/>
             </div>
 
 
