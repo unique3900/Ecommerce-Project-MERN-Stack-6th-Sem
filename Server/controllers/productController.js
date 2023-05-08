@@ -1,4 +1,5 @@
 const Product = require('../models/ProductModel.js');
+const CategoryModel = require('../models/Categorymodel');
 const slugify = require('slugify');
 const fs = require('fs');
 
@@ -50,6 +51,17 @@ const getProductController = async (req, res) => {
     }
 
 }
+
+const getProductByCategoryController = async (req, res) => {
+    try {
+        const category = await CategoryModel.find({ slug: req.params.slug });
+        const product = await Product.find({category}).populate('category');
+        res.json({success:true,product,category})
+    } catch (error) {
+        res.json({ success: false, message: "Internal Server Error"+error });
+    }
+}
+
 const getParticularProduct = async (req, res) => {
     try {
         const product = await Product
@@ -257,4 +269,4 @@ const similarProductController = async (req, res) => {
 
 // }
 
-module.exports={createProductController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory,productCountController,productPerPage,productSearchController,similarProductController}
+module.exports={createProductController,getProductByCategoryController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory,productCountController,productPerPage,productSearchController,similarProductController}

@@ -21,6 +21,7 @@ import NewProduct from './components/Admin/NewProduct'
 import UpdateProduct from './components/Admin/UpdateProduct'
 import ParticularProduct from './components/ParticularProduct'
 import SearchPage from './components/SearchPage'
+import ParticularProductWithCategory from './components/ParticularProductWithCategory'
 const App = () => {
   return (
     <div>
@@ -48,9 +49,9 @@ const App = () => {
         
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={ <ForgotPassword/>} />
-        <Route path="product/:slug" element={<ParticularProduct />} />
+        <Route path="product/:_id" element={<ParticularProduct />} />
         <Route path="home/product/:slug" element={ <ParticularProduct/> } />
-        <Route path="category" element={<h1>Categories</h1>} />
+        <Route path="products/:slug" element={<ParticularProductWithCategory/>} />
         <Route path="search" element={<SearchPage/>}/>
       </Routes>
 

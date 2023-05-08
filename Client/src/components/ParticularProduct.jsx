@@ -9,6 +9,7 @@ import {
 import Recommended from './Recommended';
 
 
+import CategoryHook from './../Global/CategoryHook';
 
 const ParticularProduct = () => {
     const params = useParams();
@@ -22,6 +23,7 @@ const ParticularProduct = () => {
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState("");
     const [id, setId] = useState("");
+    
 
     const particularProduct = async () => {
         try {

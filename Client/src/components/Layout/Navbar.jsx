@@ -28,6 +28,14 @@ import {
 import CategoryHook from '../../Global/CategoryHook';
 import axios from 'axios';
 import SearchBoxNav from '../SubComponents/SearchBoxNav';
+import {
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
+    Button,
+    Input
+} from "@material-tailwind/react";
 
 const {
     Option
@@ -126,28 +134,32 @@ const Navbar = () => {
                 <Link to="home" className='underline'>Home</Link>
                 {/* <Link to="category">Category</Link> */}
 
-                <select onChange={
-                        (value) => {
-                            setCategory(value)
-                        }
-                    }
-                    
-                    name="navSelectCategory"
-                    className=' md:flex lg:flex bg-transparent text-black '
-                    placeholder='Category'
-                    id="">
-                    {
-                    categories.map((item, index) => {
-                        return (
-                          <option key={index} value={item.name}>
-                            <Link to={`/category/${item.slug}`}>{ item.name}</Link>
-          
-                            </option>
+                <Menu className="bg-white">
+                    <MenuHandler className="bg-white text-black px-3">
+                        <Button className='w-full text-xs whitespace-pre-wrap'>{category?category:"Categories" }</Button>
+                    </MenuHandler>
+                    <MenuList className='flex flex-col gap-2 max-h-72'> {
+                        categories.map((item, index) => {
+                            return (
+                                <Link key={index}
+                                    to={
+                                        `/products/${
+                                            item.slug
+                                        }`
+                                }>
+                                    <MenuItem className='cursor-pointer'
+                                        value={
+                                            item.name
+                                    } onClick={(e) => { setCategory(e.target.value); console.log(category)}}>
+                                        {
+                                        item.name
+                                    }</MenuItem>
+                                </Link>
+                            )
+                        })
+                    } </MenuList>
+                </Menu>
 
-
-                        )
-                    })
-                } </select>
 
                 {
                 !auth || ! parsedLogCheck ? <>
@@ -169,7 +181,7 @@ const Navbar = () => {
                                 (e) => handleLogout(e)
                             }/>
                         <span className="group-hover:opacity-100 transition-opacity bg-gray-800 px-1 text-sm text-gray-100 rounded-md absolute left-1/2
-                                        -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto">Logout</span>
+                                                                                                -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto">Logout</span>
                     </div>
                 </> : ""
             }
