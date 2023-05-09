@@ -39,7 +39,7 @@ const ParticularProductWithCategory = () => {
 
     return (
         <div>
-            <h4 className="text-center mt-4">Total {products.length} Products Found</h4>
+            <h4 className="text-center text-3xl py-2 mt-4 text-blue-600 font-semibold italic">Total {products.length} Products Found</h4>
             {
             
             products.length > 0 ? products.map((item, index) => {

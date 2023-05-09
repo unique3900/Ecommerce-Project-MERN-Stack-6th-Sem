@@ -7,7 +7,7 @@ import {
     useParams
 } from 'react-router-dom';
 import Recommended from './Recommended';
-
+import ReactImageMagnify from 'react-image-magnify';
 
 import CategoryHook from './../Global/CategoryHook';
 
@@ -23,7 +23,7 @@ const ParticularProduct = () => {
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState("");
     const [id, setId] = useState("");
-    
+
 
     const particularProduct = async () => {
         try {
@@ -58,13 +58,24 @@ const ParticularProduct = () => {
 
                 <div className="overflow-auto grid mt-0 grid-flow-row lg:grid-flow-col items-center align-middle lg:grid-cols-2 w-fit   p-6 round-xl shadow-md shadow-slate-400">
                     <div className="relative justify-center place-content-center">
-                        <img className='lg:w-fit lg:h-[500px] h-64'
-                            src={
-                                `http://localhost:8080/api/v1/product/get-product-image/${
-                                    product._id
-                                }`
-                            }
-                            alt=""/>
+
+                        <ReactImageMagnify enlargedImagePosition='beside' isEnlargedImagePortalEnabledForTouch={false} className='flex flex-col' {...{
+                                smallImage: {
+                                    alt: 'Wristwatch by Ted Baker London',
+                                    isFluidWidth: true,
+                                    src: `http://localhost:8080/api/v1/product/get-product-image/${
+                                        product._id
+                                    }`
+                                },
+                                largeImage: {
+                                    src: `http://localhost:8080/api/v1/product/get-product-image/${
+                                        product._id
+                                    }`,
+                                    width: 1200,
+                                    height: 1800
+                                }
+                            }}/>
+
                     </div>
                     <div className="">
                         <h1 className='text-center text-4xl lg:text-6xl py-5 '>
@@ -93,7 +104,10 @@ const ParticularProduct = () => {
             {/* Recommended Products Page */}
             <div className="">
                 <h3 className="text-center text-4xl">Recommended</h3>
-                <Recommended slug={slug}  productCat={JSON.stringify(category._id) }/>
+                <Recommended slug={slug}
+                    productCat={
+                        JSON.stringify(category._id)
+                    }/>
             </div>
 
 
