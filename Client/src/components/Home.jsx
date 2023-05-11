@@ -245,7 +245,7 @@ const Home = () => {
 
 
                 <div className=''>
-                    <h1 className='text-4xl font-bold text-center'>Latest Products</h1>
+                    <h1 className='text-4xl font-bold text-center'>Products We Offer</h1>
 
                     <div className="overflow-x-clip grid grid-flow-row gap-8 text-neutral-600 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-5">
 
@@ -267,7 +267,7 @@ const Home = () => {
                                                 }`
                                             }
                                             alt="img-blur-shadow"
-                                            className="h-full object-cover w-full hover:scale-150 ease-in duration-500"/> 
+                                            className="h-full object-cover w-full"/> 
                                         <p className="absolute top-2 text-sm right-3 rounded-full text-white bg-red-500 px-3 py-1">
                                             {
                                             categories.map((e) => {

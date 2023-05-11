@@ -4,26 +4,31 @@ import React, {
     useState
 } from 'react'
 import {
+    Link,
     useParams
 } from 'react-router-dom';
-import Recommended from './Recommended';
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Typography
+} from "@material-tailwind/react";
+
 import ReactImageMagnify from 'react-image-magnify';
 
-import CategoryHook from './../Global/CategoryHook';
+// import CategoryHook from './../Global/CategoryHook';
 
 const ParticularProduct = () => {
     const params = useParams();
     const [product, setProduct] = useState([]);
-    const [name, setSelectedName] = useState("");
-    const [slug, setSlug] = useState("");
-    const [description, setSelectedDesc] = useState("");
-    const [price, setSelectedPrice] = useState("");
-    const [quantity, setSelectedQuantity] = useState("");
-    const [photo, setPhoto] = useState("");
-    const [categories, setCategories] = useState([]);
-    const [category, setCategory] = useState("");
-    const [id, setId] = useState("");
+    const [recommended, setRecommended] = useState([]);
 
+
+    useEffect(() => {
+        particularProduct();
+
+    }, [params ?. slug]);
 
     const particularProduct = async () => {
         try {
@@ -33,24 +38,32 @@ const ParticularProduct = () => {
                 params.slug
             }`);
             console.log(data);
+
             setProduct(data.product);
-            setCategory(data.product.category);
-            setId(data.product._id);
-            setSlug(params.slug);
-            setSelectedName(data.product.name);
-            setSelectedDesc(data.product.description);
-            setSelectedPrice(data.product.price);
-            setSelectedQuantity(data.product.quantity);
-            setPhoto(data.product.image);
+            getRecommendeds(data.product._id, data.product.category._id)
+
+
+            // console.log(id)
         } catch (error) {
             console.log(error);
         }
 
     }
 
-    useEffect(() => {
-        particularProduct();
-    }, [])
+
+    const getRecommendeds = async (pid, cid) => {
+        try {
+            const {
+                data
+            } = await axios.get(`http://localhost:8080/api/v1/product/similar-products/${pid}/${cid}`);
+            setRecommended(data.product);
+            console.log(recommended);
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
 
     return (
         <> {/* Boc */}
@@ -59,22 +72,25 @@ const ParticularProduct = () => {
                 <div className="overflow-auto grid mt-0 grid-flow-row lg:grid-flow-col items-center align-middle lg:grid-cols-2 w-fit   p-6 round-xl shadow-md shadow-slate-400">
                     <div className="relative justify-center place-content-center">
 
-                        <ReactImageMagnify enlargedImagePosition='beside' isEnlargedImagePortalEnabledForTouch={false} className='flex flex-col' {...{
-                                smallImage: {
-                                    alt: 'Wristwatch by Ted Baker London',
-                                    isFluidWidth: true,
-                                    src: `http://localhost:8080/api/v1/product/get-product-image/${
-                                        product._id
-                                    }`
-                                },
-                                largeImage: {
-                                    src: `http://localhost:8080/api/v1/product/get-product-image/${
-                                        product._id
-                                    }`,
-                                    width: 1200,
-                                    height: 1800
-                                }
-                            }}/>
+                        <ReactImageMagnify enlargedImagePosition='beside'
+                            isEnlargedImagePortalEnabledForTouch={false}
+                            className='flex flex-col'
+                            {...{
+                                                                smallImage: {
+                                                                    alt: 'Wristwatch by Ted Baker London',
+                                                                    isFluidWidth: true,
+                                                                    src: `http://localhost:8080/api/v1/product/get-product-image/${
+                                                                        product._id
+                                                                    }`
+                                                                },
+                                                                largeImage: {
+                                                                    src: `http://localhost:8080/api/v1/product/get-product-image/${
+                                                                        product._id
+                                                                    }`,
+                                                                    width: 1200,
+                                                                    height: 1800
+                                                                }
+                                                            }}/>
 
                     </div>
                     <div className="">
@@ -102,13 +118,78 @@ const ParticularProduct = () => {
 
 
             {/* Recommended Products Page */}
-            <div className="">
-                <h3 className="text-center text-4xl">Recommended</h3>
-                <Recommended slug={slug}
-                    productCat={
-                        JSON.stringify(category._id)
-                    }/>
+            <div className="mt-5 ">
+                <h3 className="text-center text-4xl">You May Also Like</h3>
+
+
             </div>
+
+
+            {/* ===== Recommended Products====== */}
+
+            <div className="grid  grid-flow-row gap-8 text-neutral-600 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-5 px-5">
+                {
+                recommended.map((item,index)=>{
+                    return (
+                        <Card className="relative w-96 cursor-grab hover:scale-105 transition-all duration-50"
+                            key={index}>
+                            <CardHeader color="blue" className="relative h-56">
+
+
+                                <img src={
+                                        `http://localhost:8080/api/v1/product/get-product-image/${
+                                            item._id
+                                        }`
+                                    }
+                                    alt="img-blur-shadow"
+                                    className="h-full object-cover w-full"/>
+                                <p className="absolute top-2 text-sm right-3 rounded-full text-white bg-red-500 px-3 py-1">
+                                    {
+                                        item.category.name
+                                    }
+                                 </p>
+
+                            </CardHeader>
+                            <Link to={
+                                    `/home/product/${
+                                        item.slug
+                                    }`
+                                }
+                                key={
+                                    item._id
+                            }>
+                                <CardBody className="text-center">
+                                    <Typography variant="h5" className="mb-2">
+                                        {
+                                        item.name
+                                    } </Typography>
+                                    <Typography> {
+                                        item.description.length > 40 ? item.description.slice(0, 40) + "...........Read More" : item.description
+                                    } </Typography>
+                                </CardBody>
+                            </Link>
+                            <CardFooter divider className="flex items-center justify-between py-3">
+                                <div className="flex justify-around flex-col">
+                                    <Typography variant="small">Nrs. {
+                                        item.price
+                                    }</Typography>
+                                    <Typography variant="small">
+                                        {
+                                        item.quantity
+                                    }
+                                        pcs</Typography>
+
+                                </div>
+
+                                <Typography variant="small">
+                                    <button className="bg-blue-500 px-3 py-2 text-white rounded-sm">Add to Cart</button>
+                                </Typography>
+
+                            </CardFooter>
+                        </Card>
+                    )
+                })
+            } </div>
 
 
         </>

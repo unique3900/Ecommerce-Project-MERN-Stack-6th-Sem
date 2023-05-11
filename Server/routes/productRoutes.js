@@ -25,5 +25,5 @@ router.post('/filter-product',filterProductCategory);
 router.get('/count-product', productCountController);
 router.get('/product-listing/:page', productPerPage);
 router.get('/search/:keyword', productSearchController);
-router.get('/similar-products/:name',similarProductController)
+router.get('/similar-products/:pid/:cid',similarProductController)
 module.exports = router;

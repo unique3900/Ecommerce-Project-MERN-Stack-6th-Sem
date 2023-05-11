@@ -73,15 +73,16 @@ const getCategoryController = async (req, res) => {
 }
 const getParticularCategoryController = async (req, res) => {
     try {
-        const { name } = req.body;
-        const getonecategory = await Category.find({ name });
-        if (getonecategory) {
+        const { _id } = req.body;
+        const getonecategory = await Category.findById({_id});
+       console.log('success'+_id)
             if (getonecategory) {
                 res.json({
                     success: true,
                     message: "Category Fetched",
                     getonecategory
                 })
+                console.log(getonecategory)
             }
             else {
                 res.json({
@@ -90,7 +91,7 @@ const getParticularCategoryController = async (req, res) => {
                    
                 })
             }
-        }
+        
     } catch (error) {
         res.json({ success: false, message: "Internal Server Error"+error });
     }

@@ -55,7 +55,8 @@ const getProductController = async (req, res) => {
 const getProductByCategoryController = async (req, res) => {
     try {
         const category = await CategoryModel.find({ slug: req.params.slug });
-        const product = await Product.find({category}).populate('category');
+        const product = await Product.find({ category }).populate('category');
+        
         res.json({success:true,product,category})
     } catch (error) {
         res.json({ success: false, message: "Internal Server Error"+error });
@@ -66,8 +67,7 @@ const getParticularProduct = async (req, res) => {
     try {
         const product = await Product
         .findOne({ slug: req.params.slug })
-        .select("-image")
-            .populate("category");
+        .select("-image").populate("category");
         
             res.status(200).send({
                 success: true,
@@ -237,15 +237,17 @@ const productSearchController = async (req, res) => {
 
 const similarProductController = async (req, res) => {
     try {
-        const { name } = req.params;
-        const fetchData = await Product.findById({ name });
-        res.json(fetchData);
+        const { cid, pid } = req.params;
+        console.log(cid + "...." + pid)
+        const product = await Product.find({ category: cid, _id: { $ne: pid } }).select('-1').limit(3).populate('category');
+        res.json({ success: true, product });
+        console.log(product)
 
     } catch (error) {
         res.status(400).send({
             success: false,
-            message: "Error While searching Product",
-            error,
+            message: "Error While searching Product"+error,
+            
           });
     }
 }
