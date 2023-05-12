@@ -20,6 +20,7 @@ import {
 import {
     SearchProvider
 } from './components/Context-State/search';
+import { CartProvider } from './components/Context-State/cartContext';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
@@ -27,10 +28,12 @@ const root = createRoot(rootElement);
 root.render (
     <AuthProvider>
         <SearchProvider>
-            <BrowserRouter>
-                <App/>
-                <ToastContainer/>
-            </BrowserRouter>
+            <CartProvider>
+                    <BrowserRouter>
+                        <App/>
+                        <ToastContainer/>
+                    </BrowserRouter>
+            </CartProvider>
         </SearchProvider>
     </AuthProvider>
 

@@ -188,7 +188,7 @@ const Navbar = () => {
 
                 <div className="cart relative ">
                     <Link to="carts" className='cursor-pointer'><AiOutlineShoppingCart className='w-10  h-10 text-lg relative'/></Link>
-                    <a href="#" className='absolute  bg-[#ff1e12] rounded-full top-0 right-0 text-[15px] font-bold px-[3px] '>10</a>
+                    <p  className='absolute  bg-[#ff1e12] rounded-full top-0 right-0 text-[15px] font-bold px-[3px] '>10</p>
                 </div>
             </div>
 
