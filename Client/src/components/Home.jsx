@@ -30,11 +30,12 @@ import {
 import {
     Checkbox
 } from 'antd';
+import { useCart } from './Context-State/cartContext';
 
 
 const Home = () => {
     const [auth, setAuth] = useAuth();
-
+    const [cart, setCart] = useCart();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [checked, setChecked] = useState([]);
@@ -247,7 +248,7 @@ const Home = () => {
                 <div className=''>
                     <h1 className='text-4xl font-bold text-center'>Products We Offer</h1>
 
-                    <div className="overflow-x-clip grid grid-flow-row gap-8 text-neutral-600 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-5">
+                    <div className="overflow-x-clip grid grid-flow-row justify-center gap-8 text-neutral-600 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-5">
 
 
                         {
@@ -316,7 +317,11 @@ const Home = () => {
                                         </div>
 
                                         <Typography variant="small">
-                                            <button className="bg-blue-500 px-3 py-2 text-white rounded-sm">Add to Cart</button>
+                                            <button className="bg-blue-500 px-3 py-2 text-white rounded-sm" onClick={() => {
+                                                setCart([...cart, item]);
+                                                localStorage.setItem('cartItems',JSON.stringify([...cart,item]))
+                                                toast.success("Product Added to Cart")
+                                            }}>Add to Cart</button>
                                         </Typography>
 
                                     </CardFooter>

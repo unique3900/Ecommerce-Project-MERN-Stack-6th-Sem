@@ -12,9 +12,11 @@ import {
     toast
 } from 'react-toastify';
 import { BiErrorAlt } from 'react-icons/bi';
+import { useCart } from './Context-State/cartContext';
 
 
 const ParticularProductWithCategory = () => {
+    const [cart, setCart] = useCart();
     const params = useParams();
     const [products, setProducts] = useState([]);
 
@@ -76,7 +78,11 @@ const ParticularProductWithCategory = () => {
                                             item.price
                                         }/-</p>
                                     </div>
-                                    <button className='mx-3 mt-5 bg-blue-500 p-2 w-full text-white'>Add to Cart</button>
+                                    <button onClick={() => {
+                                        setCart([...cart, item]);
+                                        localStorage.setItem('cartItems',JSON.stringify([...cart,item]))
+                                         toast.success("Product Added to Cart")
+                                    }} className='mx-3 mt-5 bg-blue-500 p-2 w-full text-white'>Add to Cart</button>
 
                                 </div>
                             </div>

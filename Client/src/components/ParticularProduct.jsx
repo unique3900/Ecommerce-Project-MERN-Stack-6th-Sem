@@ -16,10 +16,13 @@ import {
 } from "@material-tailwind/react";
 
 import ReactImageMagnify from 'react-image-magnify';
+import { useCart } from './Context-State/cartContext';
+import { toast } from 'react-toastify';
 
 // import CategoryHook from './../Global/CategoryHook';
 
 const ParticularProduct = () => {
+    const [cart, setCart] = useCart();
     const params = useParams();
     const [product, setProduct] = useState([]);
     const [recommended, setRecommended] = useState([]);
@@ -110,7 +113,11 @@ const ParticularProduct = () => {
                                 product.price
                             }/-</p>
                         </div>
-                        <button className='mx-3 mt-5 bg-blue-500 p-2 w-full text-white'>Add to Cart</button>
+                        <button onClick={() => {
+                            setCart([...cart, product]);
+                            localStorage.setItem('cartItems',JSON.stringify([...cart,product]))
+                            toast.success("Product Added to Cart")
+                        }} className='mx-3 mt-5 bg-blue-500 p-2 w-full text-white'>Add to Cart</button>
 
                     </div>
                 </div>
@@ -182,7 +189,11 @@ const ParticularProduct = () => {
                                 </div>
 
                                 <Typography variant="small">
-                                    <button className="bg-blue-500 px-3 py-2 text-white rounded-sm">Add to Cart</button>
+                                    <button onClick={() => {
+                                        setCart([...cart, item]);
+                                        localStorage.setItem('cartItems',JSON.stringify([...cart,item]))
+                                         toast.success("Product Added to Cart")
+                                    }} className="bg-blue-500 px-3 py-2 text-white rounded-sm">Add to Cart</button>
                                 </Typography>
 
                             </CardFooter>

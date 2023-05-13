@@ -36,6 +36,7 @@ import {
     Button,
     Input
 } from "@material-tailwind/react";
+import { useCart } from '../Context-State/cartContext';
 
 const {
     Option
@@ -44,6 +45,7 @@ const Navbar = () => {
 
     const navigate = useNavigate();
     const [auth, setAuth] = useAuth();
+    const [cart, setCart] = useCart();
     const [username, setUsername] = useState();
 
     const [category, setCategory] = useState("");
@@ -188,7 +190,7 @@ const Navbar = () => {
 
                 <div className="cart relative ">
                     <Link to="carts" className='cursor-pointer'><AiOutlineShoppingCart className='w-10  h-10 text-lg relative'/></Link>
-                    <p  className='absolute  bg-[#ff1e12] rounded-full top-0 right-0 text-[15px] font-bold px-[3px] '>10</p>
+                    <p className='absolute  bg-[#ff1e12] rounded-full top-0 right-0 text-[15px] font-bold px-[4px] '>{cart.length }</p>
                 </div>
             </div>
 
