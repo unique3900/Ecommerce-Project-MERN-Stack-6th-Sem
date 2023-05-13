@@ -16,7 +16,8 @@ const CartItems = () => {
     const [cart, setCart] = useCart();
     const [auth, setAuth] = useAuth();
     const navigate = useNavigate();
-
+    const [coupne, setCoupne] = useState("");
+    const [coupneValidity, setCoupneValidity] = useState(false);
 
     useEffect(() => {
         console.log(cart);
@@ -30,6 +31,33 @@ const CartItems = () => {
             setCart(myCart);
             localStorage.setItem('cartItems', JSON.stringify(myCart));
             
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const ValidateCoupen = () => {
+        if (coupne === 'BCABOYS20') {
+            setCoupneValidity(true);
+            toast.success("Congratulations!You Received 20% discount")
+        }
+        else {
+            setCoupneValidity(false);
+            toast.error("Invalid Coupen Code")
+        }
+    }
+    const totalPrice = () => {
+        try {
+            let total = 0;
+            cart.map((item) => {
+                total = total + item.price;
+                
+            })
+            if (coupneValidity) {
+                total = total - 0.2 * total
+            }
+           
+            return total;
         } catch (error) {
             console.log(error);
         }
@@ -112,14 +140,14 @@ const CartItems = () => {
                 <div className="flex flex-col border-solid border-1 h-52 border-gray-500 px-3 py-2 gap-2 shadow-lg w-full lg:w-fit">
                     <h2 className='text-center text-2xl font-bold'>Order Summary</h2>
                     <div className="flex flex-row justify-between items-center gap-2">
-                        <input type="text" placeholder='Coupne Code' className=' border-solid border-black border-2 px-2 py-2'/>
-                        <button className="bg-sky-500 text-white px-3 py-2.5">Apply</button>
+                        <input value={coupne} type="text" placeholder='Coupne Code' className=' border-solid border-black border-2 px-2 py-2' onChange={(e)=>setCoupne(e.target.value)}/>
+                        <button onClick={ValidateCoupen} className="bg-sky-500 text-white px-3 py-2.5">Apply</button>
                     </div>
 
                     <hr/>
                     <div className="flex flex-row justify-evenly">
-                        <h4 className="text-sky-600 font-bold">{ }</h4>
-                        <h5 className="text-black font-bold">{}</h5>
+                        <h4 className="text-sky-600 font-bold">Total:</h4>
+                        <h5 className="text-black font-bold">Nrs. {totalPrice()} /-</h5>
 
                     </div>
 
