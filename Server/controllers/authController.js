@@ -247,9 +247,33 @@ const sendEmail=async (name,email,secretKey)=> {
 
 }
 
+const getUserByIdController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);
+        res.json({success:true,message:"User Fetched Successfullt",user});
+    } catch (error) {
+        console.log("Couldnot send user Data" + error);
+    }
+}
+
+const updateUserController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, address,phone,gender,email } = req.body;
+        const user = await User.findByIdAndUpdate(id, { name, email, address, gender, phone })
+        if (user) {
+            res.json({success:true,message:"User Updated Successfully",user});
+        }
+        
+    } catch (error) {
+        console.log("Couldnot send user Data" + error);
+    }
+}
+
 module.exports = {
     registerController, 
     loginController,
-    forgotPasswordController,verificationController,changePasswordController,isAdmins
-    // anotherMethod
+    forgotPasswordController,verificationController,changePasswordController,isAdmins,getUserByIdController
+,updateUserController    // anotherMethod
 };

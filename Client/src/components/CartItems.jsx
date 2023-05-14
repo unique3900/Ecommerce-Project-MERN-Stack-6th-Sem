@@ -99,7 +99,7 @@ const CartItems = () => {
                                 <div className="flex flex-col flex-wrap gap-3">
                                     <p  className=" flex flex-col flex-wrap-reverse text-lg">
                                         {
-                                            item.name.slice(0,50) + '....'
+                                            item.name.slice(0,30) + '....'
                                             
                                         }</p>
                        

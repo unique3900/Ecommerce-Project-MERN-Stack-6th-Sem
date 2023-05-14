@@ -1,5 +1,5 @@
 const express = require('express');
-const {registerController, forgotPasswordController, verificationController, changePasswordController, isAdmins} = require('../controllers/authController');
+const {registerController, forgotPasswordController, verificationController, changePasswordController, isAdmins, getUserByIdController, updateUserController} = require('../controllers/authController');
 const {loginController} = require('../controllers/authController');
 const {requireSignIn,isAdmin, isMyAdmin} = require('../middlewares/authMiddleware');
 
@@ -32,6 +32,9 @@ router.get('/admin-auth',requireSignIn , isMyAdmin, (req, res) => {
    
     
 })
+
+router.get('/get-user-by-id/:id', getUserByIdController);
+router.put('/update-user/:id', updateUserController);
 
 
 module.exports = router;

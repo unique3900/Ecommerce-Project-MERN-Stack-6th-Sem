@@ -23,6 +23,7 @@ import ParticularProduct from './components/ParticularProduct'
 import SearchPage from './components/SearchPage'
 import ParticularProductWithCategory from './components/ParticularProductWithCategory'
 import CartItems from './components/CartItems'
+import UpdateProfile from './user/UpdateProfile'
 const App = () => {
   return (
     <div>
@@ -39,7 +40,8 @@ const App = () => {
 
         <Route path='carts' element={<CartItems/>}/>
         <Route path="" element={<PrivateRoute/>} >
-        <Route path='change-password' element={<ChangePassword />} />
+          <Route path='change-password' element={<ChangePassword />} />
+          <Route path='update-profile/:_id' element={<UpdateProfile/>}/>
         </Route>
 
         <Route path="/dashboard" element={<AdminRoute/>} >
