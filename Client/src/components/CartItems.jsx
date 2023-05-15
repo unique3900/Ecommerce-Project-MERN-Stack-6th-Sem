@@ -12,16 +12,19 @@ import {
 } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import DropIn from "braintree-web-drop-in-react";
+import axios from 'axios';
+
 const CartItems = () => {
     const [cart, setCart] = useCart();
     const [auth, setAuth] = useAuth();
     const navigate = useNavigate();
     const [coupne, setCoupne] = useState("");
     const [coupneValidity, setCoupneValidity] = useState(false);
+    const [clientToken, setClientToken] = useState("");
+    const [instance, setInstance] = useState("");
 
-    useEffect(() => {
-        console.log(cart);
-    }, []);
+
 
     const removeFromCart = (id) => {
         try {
@@ -35,6 +38,22 @@ const CartItems = () => {
             console.log(error);
         }
     }
+
+
+    const getPaymentGatewayToken = async() => {
+        try {
+            const { data } = await axios.get(`http://localhost:8080/api/v1/product/braintree/token`);
+            setClientToken(data.response.clientToken);
+            // console.log(data.response.clientToken);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getPaymentGatewayToken();
+
+    }, [auth.token]);
 
     const ValidateCoupen = () => {
         if (coupne === 'BCABOYS20') {
@@ -60,6 +79,25 @@ const CartItems = () => {
             return total;
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const handlePayment = async() => {
+        try {
+            const { nonce } = await instance.requestPaymentMethod();
+            const { data } = await axios.post(`http://localhost:8080/api/v1/product/braintree/payment`, {
+                nonce, cart
+            });
+            console.log(nonce);
+            console.log(data);
+            localStorage.removeItem('cartItems');
+            setCart([]);
+            navigate('/dashboard/user/order');
+            toast.success("Payment Successful");
+
+
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -113,7 +151,9 @@ const CartItems = () => {
                                 <div className="flex flex-row items-center justify-evenly gap-2">
                                     <button className='text-lg font-extrabold'>+</button>
                                     <input type="number" name="cartValue" className='w-20 h-8 text-center border-solid border-2 border-sky-500' id=""
-                                        value={2}/>
+                                        value={2} onChange={() => {
+                                            console.log("Amount Changed")
+                                        }}/>
                                     <button className='text-lg font-extrabold'>-</button>
                                 </div>
 
@@ -140,7 +180,7 @@ const CartItems = () => {
                 <div className="flex flex-col border-solid border-1 h-52 border-gray-500 px-3 py-2 gap-2 shadow-lg w-full lg:w-fit">
                     <h2 className='text-center text-2xl font-bold'>Order Summary</h2>
                     <div className="flex flex-row justify-between items-center gap-2">
-                        <input value={coupne} type="text" placeholder='Coupne Code' className=' border-solid border-black border-2 px-2 py-2' onChange={(e)=>setCoupne(e.target.value)}/>
+                        <input value={coupne} type="text" placeholder='Coupne Code' className=' border-solid border-black border-2 px-2 py-2 w-full' onChange={(e)=>setCoupne(e.target.value)}/>
                         <button onClick={ValidateCoupen} className="bg-sky-500 text-white px-3 py-2.5">Apply</button>
                     </div>
 
@@ -150,6 +190,7 @@ const CartItems = () => {
                         <h5 className="text-black font-bold">Nrs. {totalPrice()} /-</h5>
 
                     </div>
+                    {/* <h6 className='font-bold text-md text-purple-700 text-center'>Delivery Address : <span> {auth.user.address }</span></h6> */}
 
                     <hr/> {
                     !auth.token ? <button className="bg-red-500 text-white font-bold px-3 py-2 w-full mt-3"
@@ -158,8 +199,38 @@ const CartItems = () => {
                                 navigate('/login')
                             }
                     }>Login to Checkout</button> : <button className="bg-blue-500 text-white font-bold px-3 py-2 w-full mt-3">Checkout</button>
-                } </div>
+                    }
 
+
+
+                    <div className="mt-4">
+                        {
+                            !clientToken || !cart.length ? ("") : (
+                                <>
+                                
+                                <DropIn options={{
+                        authorization: clientToken,
+                        paypal: {
+                            flow: 'checkout'
+                        }
+                        
+                    }}
+                    onInstance={instance => setInstance(instance)}
+                    />
+                                    <button className='bg-purple-600 text-white px-3 py-2 w-full' onClick={handlePayment}
+                                    disabled={!auth.user.address || !instance}
+                                    >Make Payment</button>
+                                </>
+                            )
+                        }
+
+                </div>
+
+                
+                
+                </div>
+                
+                
             </div>
 
         </>

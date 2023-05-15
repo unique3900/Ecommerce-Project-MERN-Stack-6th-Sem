@@ -2,7 +2,19 @@ const Product = require('../models/ProductModel.js');
 const CategoryModel = require('../models/Categorymodel');
 const slugify = require('slugify');
 const fs = require('fs');
+const dotenv = require('dotenv').config();
 
+const braintree = require('braintree');
+const orderModel = require('../models/orderModel.js');
+
+
+// Payment Gateway
+var gateway = new braintree.BraintreeGateway({
+    environment:  braintree.Environment.Sandbox,
+    merchantId: process.env.BRAINTREE_MERCHANT_ID,
+    publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+    privateKey:process.env.BRAINTREE_PRIVATE_KEY,
+  });
 
 const createProductController = async (req, res) => {
     try {
@@ -271,4 +283,63 @@ const similarProductController = async (req, res) => {
 
 // }
 
-module.exports={createProductController,getProductByCategoryController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory,productCountController,productPerPage,productSearchController,similarProductController}
+
+
+
+
+// Payment Gateway api
+const braintreeTokenController = async (req, res) => {
+    try {
+        // As given by their documentation
+        // Token mathi ko var gateway bata aaucha
+        gateway.clientToken.generate({}, function (err, response){
+            if (err) {
+                res.json({err})
+            }
+            else {
+                res.json({response})
+            }
+        })
+    } catch (error) {
+        
+        console.log(error)
+    }
+}
+
+
+const braintreePaymentController = async(req,res) => {
+    try {
+        const { cart, nonce/*from documentation itself*/ } = req.body;
+        console.log(cart + "" + nonce); 
+        let total = 0;
+        cart.map((i) => {
+            total += i.price;
+          });
+        let newTransaction = gateway.transaction.sale({
+            amount: total,
+            paymentMethodNonce: nonce,
+            options: {
+              submitForSettlement: true,
+            },
+        },
+        function(err, response) {
+            if (response) {
+                const order = new orderModel({
+                    products: cart,
+                    payment: response,
+                    buyer: req.user._id,
+
+                }).save();
+                res.json({ success: true });
+            }
+            else {
+                res.json({ success: false, err });
+            }
+        }
+        )
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+module.exports={createProductController,getProductByCategoryController,getProductController,getParticularProduct,getProductImageController,deleteProductController,updateProductController,filterProductCategory,productCountController,productPerPage,productSearchController,similarProductController,braintreeTokenController,braintreePaymentController}

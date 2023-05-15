@@ -9,12 +9,13 @@ const cors = require('cors');
 const authRoutes=require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
-const formidableMiddleware = require('express-formidable');
+
 mongoose.connect('mongodb://localhost:27017/ecommerce');
 
 // Middlewares
-app.use(express.json());
+app.use(express.json({limit : 52428800}));
 app.use(morgan('dev'));
+
 app.use(cors());
 
 

@@ -100,7 +100,7 @@ const  UserInfo = () => {
                                                 <h3 className='text-xl capitalize'>{name}</h3>
                                                 </div>
                                                 <div className="one">
-                                                <h3 className='text-xl capitalize'>{email}</h3>
+                                                <h3 className='text-xl capitalize'>{address}</h3>
                                             </div>
                                             <div className="one">
                                                 <h3 className='text-xl capitalize'>{gender}</h3>

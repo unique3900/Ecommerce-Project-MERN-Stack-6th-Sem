@@ -44,8 +44,10 @@ const UpdateProfile = () => {
             if (data.success) {
                 toast.success("User Updated Successfully");
 
+                setAuth({...auth, user: data.user});
                 navigate('/home');
             }
+            localStorage.setItem("auth", JSON.stringify(data));
         } catch (error) {
             console.log(error)
         }
