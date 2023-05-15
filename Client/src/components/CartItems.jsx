@@ -23,9 +23,7 @@ const CartItems = () => {
     const [coupneValidity, setCoupneValidity] = useState(false);
     const [clientToken, setClientToken] = useState("");
     const [instance, setInstance] = useState("");
-
-
-
+    
     const removeFromCart = (id) => {
         try {
             let myCart = [...cart];
@@ -52,7 +50,7 @@ const CartItems = () => {
 
     useEffect(() => {
         getPaymentGatewayToken();
-
+        
     }, [auth.token]);
 
     const ValidateCoupen = () => {
@@ -177,7 +175,7 @@ const CartItems = () => {
 
                 {/* Order Summary */}
 
-                <div className="flex flex-col border-solid border-1 h-52 border-gray-500 px-3 py-2 gap-2 shadow-lg w-full lg:w-fit">
+                <div className="flex flex-col border-solid border-1 h-auto border-gray-500 px-3 py-2 gap-2 shadow-lg w-full lg:w-fit">
                     <h2 className='text-center text-2xl font-bold'>Order Summary</h2>
                     <div className="flex flex-row justify-between items-center gap-2">
                         <input value={coupne} type="text" placeholder='Coupne Code' className=' border-solid border-black border-2 px-2 py-2 w-full' onChange={(e)=>setCoupne(e.target.value)}/>
@@ -190,7 +188,7 @@ const CartItems = () => {
                         <h5 className="text-black font-bold">Nrs. {totalPrice()} /-</h5>
 
                     </div>
-                    {/* <h6 className='font-bold text-md text-purple-700 text-center'>Delivery Address : <span> {auth.user.address }</span></h6> */}
+                    {/* <h6 className='font-bold text-md text-purple-700 text-center'>Delivery Address : <span> {auth.user.address}</span></h6> */}
 
                     <hr/> {
                     !auth.token ? <button className="bg-red-500 text-white font-bold px-3 py-2 w-full mt-3"
@@ -198,14 +196,11 @@ const CartItems = () => {
                             () => {
                                 navigate('/login')
                             }
-                    }>Login to Checkout</button> : <button className="bg-blue-500 text-white font-bold px-3 py-2 w-full mt-3">Checkout</button>
-                    }
-
-
-
-                    <div className="mt-4">
+                    }>Login to Checkout</button> :  (
+                        <div className="mt-4 flex flex-col justify-center">
                         {
-                            !clientToken || !cart.length ? ("") : (
+                                        !clientToken || !cart.length ? (<button className='bg-purple-500 text-white flex
+                             justify-center px-3 py-2' disabled>Cart is Empty</button>) : (
                                 <>
                                 
                                 <DropIn options={{
@@ -225,6 +220,13 @@ const CartItems = () => {
                         }
 
                 </div>
+                    )
+                    }
+
+
+
+                   
+                   
 
                 
                 

@@ -47,7 +47,7 @@ const UpdateProfile = () => {
                 setAuth({...auth, user: data.user});
                 navigate('/home');
             }
-            localStorage.setItem("auth", JSON.stringify(data));
+            localStorage.setItem("auth", JSON.stringify(auth));
         } catch (error) {
             console.log(error)
         }
