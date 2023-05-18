@@ -20,6 +20,8 @@ const CartItems = () => {
     const [auth, setAuth] = useAuth();
     const navigate = useNavigate();
     const [coupne, setCoupne] = useState("");
+    const [total, setTotal] = useState("");
+    const [discPercentage, setDiscountPercentage] = useState("");
     const [coupneValidity, setCoupneValidity] = useState(false);
     const [clientToken, setClientToken] = useState("");
     const [instance, setInstance] = useState("");
@@ -50,41 +52,60 @@ const CartItems = () => {
 
     useEffect(() => {
         getPaymentGatewayToken();
-        
+        setTotal(totalPrice());
+      
     }, [auth.token]);
 
-    const ValidateCoupen = () => {
-        if (coupne === 'BCABOYS20') {
-            setCoupneValidity(true);
-            toast.success("Congratulations!You Received 20% discount")
-        }
-        else {
-            setCoupneValidity(false);
-            toast.error("Invalid Coupen Code")
-        }
-    }
     const totalPrice = () => {
         try {
-            let total = 0;
+            let mytotal = 0;
             cart.map((item) => {
-                total = total + item.price;
-                
+                mytotal = mytotal + item.price;
             })
             if (coupneValidity) {
-                total = total - 0.2 * total
+                mytotal = mytotal - 0.2 * mytotal;
+               
+             
             }
+   
+            
            
-            return total;
+            setTotal(mytotal);
+            
+            return mytotal;
         } catch (error) {
             console.log(error);
         }
     }
 
+
+    
+
+    const ValidateCoupen = () => {
+        if (coupne!==" " && coupne === 'BCABOYS20') {
+             setCoupneValidity(true);
+            totalPrice();
+            setDiscountPercentage(25)
+            toast.success("Congratulations!You Received 20% discount")
+        }
+        else {
+            setCoupneValidity(false);
+            setDiscountPercentage(0)
+            toast.error("Invalid Coupen Code")
+        }
+    }
+    useEffect(() => {
+        totalPrice();
+        console.log(discPercentage)
+    }, [coupneValidity])
+
+    
+
     const handlePayment = async() => {
         try {
             const { nonce } = await instance.requestPaymentMethod();
             const { data } = await axios.post(`http://localhost:8080/api/v1/product/braintree/payment`, {
-                nonce, cart
+                nonce, cart ,total,discPercentage
             });
             console.log(nonce);
             console.log(data);
@@ -185,7 +206,7 @@ const CartItems = () => {
                     <hr/>
                     <div className="flex flex-row justify-evenly">
                         <h4 className="text-sky-600 font-bold">Total:</h4>
-                        <h5 className="text-black font-bold">Nrs. {totalPrice()} /-</h5>
+                        <h5 className="text-black font-bold">Nrs. {total} /-</h5>
 
                     </div>
                     {/* <h6 className='font-bold text-md text-purple-700 text-center'>Delivery Address : <span> {auth.user.address}</span></h6> */}

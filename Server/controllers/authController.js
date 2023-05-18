@@ -5,6 +5,7 @@ const userModel = require('../models/userModel');
 const dotenv = require('dotenv').config();
 const nodemailer = require("nodemailer");
 const userOTPVerificationModel = require('../models/OtpModel');
+const orderModel = require('../models/orderModel');
 
 
 const registerController = async (req, res) => {
@@ -271,9 +272,33 @@ const updateUserController = async (req, res) => {
     }
 }
 
+
+const getOrderController = async (req, res) => {
+    try {
+        
+        const orders = await orderModel.find({ buyer: req.user._id }).populate('products', '-image').populate('buyer', 'name');
+
+        res.json({ success: true, orders });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+const getAllOrderController = async (req, res) => {
+    try {
+        
+        const orders = await orderModel.find({ }).populate('products', '-image').populate('buyer', 'name');
+
+        res.json({ success: true, orders });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     registerController, 
     loginController,
     forgotPasswordController,verificationController,changePasswordController,isAdmins,getUserByIdController
-,updateUserController    // anotherMethod
+,updateUserController,getOrderController ,getAllOrderController   // anotherMethod
 };

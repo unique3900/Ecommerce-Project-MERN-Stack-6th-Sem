@@ -24,7 +24,7 @@ const AdminDashboard = () => {
                   <h4 className='font-bold text-xl'>Operation</h4>
                 <Link to='create-category'><button className="text-white bg-green-500 rounded-lg px-3 py-1 w-full">Category Management</button></Link>  
                 <Link to='new-product'> <button className="text-white bg-purple-500 rounded-lg px-3 py-2 w-full">Product Management</button></Link> 
-                   
+                <Link to='order-management'> <button className="text-white bg-pink-500 rounded-lg px-3 py-2 w-full">Order Management</button></Link> 
                 </div>
                 
                 {/* Sale Data */}

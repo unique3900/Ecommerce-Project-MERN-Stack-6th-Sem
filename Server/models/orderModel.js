@@ -9,7 +9,15 @@ const OrderSchema = new mongoose.Schema({
     ],
     payment: {
         
-    },
+  },
+  paidAmount: {
+    type: Number,
+    ref: "Product",
+  },
+  discountPercentage: {
+    type: Number,
+    default:0,
+  },
     buyer: {
         type: mongoose.ObjectId,
         ref: "users",

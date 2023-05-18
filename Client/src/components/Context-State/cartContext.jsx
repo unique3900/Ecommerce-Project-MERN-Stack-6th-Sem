@@ -9,7 +9,7 @@ const CartProvider = ({ children }) => {
 
         let existingItems = localStorage.getItem('cartItems');
         if (existingItems) {
-            setCart(JSON.parse(existingItems))
+            setCart(JSON.parse(existingItems ))
         }
     }, [])
     

@@ -24,6 +24,7 @@ import SearchPage from './components/SearchPage'
 import ParticularProductWithCategory from './components/ParticularProductWithCategory'
 import CartItems from './components/CartItems'
 import UpdateProfile from './user/UpdateProfile'
+import OrderManagement from './components/Admin/OrderManagement'
 const App = () => {
   return (
     <div>
@@ -48,7 +49,8 @@ const App = () => {
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="admin/create-category" element={<CreateCategory />} />
           <Route path="admin/new-product/:slug" element={<UpdateProduct/>} />
-          <Route path="admin/new-product" element={<NewProduct/>}  />
+          <Route path="admin/new-product" element={<NewProduct />} />
+          <Route path="admin/order-management" element={<OrderManagement/>}  />
         </Route>
         
         <Route path="register" element={<Register />} />
