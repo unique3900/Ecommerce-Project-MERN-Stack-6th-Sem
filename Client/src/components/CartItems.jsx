@@ -63,7 +63,7 @@ const CartItems = () => {
                 mytotal = mytotal + item.price;
             })
             if (coupneValidity) {
-                mytotal = mytotal - 0.2 * mytotal;
+                mytotal = mytotal - 0.25 * mytotal;
                
              
             }

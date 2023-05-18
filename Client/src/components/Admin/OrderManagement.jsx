@@ -27,7 +27,7 @@ const OrderManagement = () => {
     }
     
 
-    const TABLE_HEAD = ["Product", "Price","Discount", "Buyer",'Purchased Date', "Status"];
+    const TABLE_HEAD = ["Product", "Price","Paid Amount","Discount", "Buyer",'Purchased Date', "Status"];
 
     const TABLE_ROWS = [
         {
@@ -124,11 +124,17 @@ const OrderManagement = () => {
                             </td>
                             <td className="p-4">
                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                {data.products[0].price} </Typography>
+                                {data.products[0].price } </Typography>
                             </td>
                             <td className="p-4">
                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                {data.discountPercentage} % </Typography>
+                                {data.paidAmount>0?data.paidAmount:data.products[0].price} </Typography>
+                            </td>
+
+                            <td className="p-4">
+                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                   
+                                {Math.floor( data.discountPercentage/100 * data.products[0].price)}  </Typography>
                             </td>
                             <td className="p-4">
                                 <Typography variant="small" color="blue-gray" className="font-normal capitalize">
