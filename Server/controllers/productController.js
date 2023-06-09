@@ -78,8 +78,7 @@ const getProductByCategoryController = async (req, res) => {
 const getParticularProduct = async (req, res) => {
     try {
         const product = await Product
-        .findOne({ slug: req.params.slug })
-        .select("-image").populate("category");
+        .findOne({ slug: req.params.slug }).populate("category");
         
             res.status(200).send({
                 success: true,

@@ -59,7 +59,8 @@ const SearchPage = () => {
                 data
             } = await axios.get(`http://localhost:8080/api/v1/product/product-listing/${page}`);
                 setLoading(false);
-                setProducts([...products, ...data?.products]);
+            setProducts([...products, ...data?.products]);
+            console.log(data)
         } catch (error) {
             setLoading(false);
             console.log(error)
@@ -109,7 +110,7 @@ const SearchPage = () => {
 
                             </CardHeader>
                             <Link to={
-                                    `/product/${
+                                    `/home/product/${
                                         item.slug
                                     }`
                                 }
